@@ -11,12 +11,12 @@ const PriceList = () => {
     }
     
     useEffect(() => {
-        // fetchCoins()
+        fetchCoins()
     }, [])
     return (
         <>
-            <div className=''>
-                <h1 className='text-3xl font-bold text-gray-700 mx-4 my-4'>Cryptocurrency by market cap</h1>
+            <div className='bg-white mx-2 my-2 rounded-lg'>
+                <h1 className='text-xl font-bold text-gray-700 bg-white mx-4 my-2 px-1 py-1 rounded-lg'>Cryptocurrencies by market cap</h1>
                 {coinsList && 
                 <div className='flex flex-col'>
                     {coinsList.map(elem => {
