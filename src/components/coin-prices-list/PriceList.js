@@ -22,7 +22,7 @@ const PriceList = () => {
                     {coinsList.map(elem => {
                         return <PriceListItem 
                         key={elem.symbol} coinName={elem.name} 
-                        coinMarketCap ={elem.market_cap} percentageChange ={elem.market_cap_change_percentage_24h}/>
+                        coinMarketCap ={elem.market_cap} percentageChange ={elem.market_cap_change_percentage_24h} image={elem.image}/>
                     })}
                 </div>
                 }
