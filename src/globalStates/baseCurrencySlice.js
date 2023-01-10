@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { fetchCoinsList } from "./coinsListSlice";
 
 const initialState = {
     currency: "USD"
@@ -10,6 +11,7 @@ const baseCurrencySlice = createSlice({
     reducers: {
         baseCurrencyChanged:(state, action) => {
             state.currency = action.payload
+            fetchCoinsList()
         }
     },
 })

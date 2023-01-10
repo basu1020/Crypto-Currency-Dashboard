@@ -20,7 +20,6 @@ const Portfolio = () => {
     ]
   })
 
-
   return (
     <>
       <div className='mx-2 my-2 w-1/2 bg-white rounded-lg px-2 py-2 shadow-lg'>

@@ -10,7 +10,7 @@ const PriceListItem = (props) => {
           </div>
           <div className='mx-3 my-3'>
             <p className='font-bold text-gray-800'>{props.coinName}</p>
-            <p className='font-bold text-gray-400'>Mkt.Cap: {Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(props.coinMarketCap)}</p>
+            <p className='text-gray-400'>Mkt.Cap: {Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(props.coinMarketCap)}</p>
           </div>
         </div>
         <div className={
