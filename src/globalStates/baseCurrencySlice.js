@@ -9,9 +9,8 @@ const baseCurrencySlice = createSlice({
     name: 'baseCurrency',
     initialState,
     reducers: {
-        baseCurrencyChanged:(state, action) => {
+        baseCurrencyChanged: (state, action) => {
             state.currency = action.payload
-            fetchCoinsList()
         }
     },
 })

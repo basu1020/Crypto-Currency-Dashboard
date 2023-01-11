@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { selectBaseCurrency } from '../../globalStates/baseCurrencySlice'
 
 const PriceListItem = (props) => {
+  const baseCurrency = useSelector(selectBaseCurrency)
+
   return (
     <>
       <div className='flex flex-row justify-between mx-1  shadow-lg hover:shadow-xl bg-white rounded-lg my-1'>
@@ -10,7 +14,7 @@ const PriceListItem = (props) => {
           </div>
           <div className='mx-3 my-3'>
             <p className='font-bold text-gray-800'>{props.coinName}</p>
-            <p className='text-gray-400'>Mkt.Cap: {Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(props.coinMarketCap)}</p>
+            <p className='text-gray-400'>Mkt.Cap: {Intl.NumberFormat('en-US', { style: 'currency', currency: baseCurrency.currency }).format(props.coinMarketCap)} </p>
           </div>
         </div>
         <div className={

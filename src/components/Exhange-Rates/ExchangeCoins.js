@@ -1,10 +1,18 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
+import { selectCoinsList, selectCoinsListStatus } from '../../globalStates/coinsListSlice'
 
 const ExchangeCoins = () => {
+    const coinsList = useSelector(selectCoinsList)
+    const coinListStatus = useSelector(selectCoinsListStatus)
     const [exRate, setExRate] = useState(0)
-    const [buyCoin, setBuyCoin] = useState('')
-    const [sellCoin, setSellCoin] = useState('')
+    const [buyCoin, setBuyCoin] = useState(1)
+    const [sellCoin, setSellCoin] = useState(1)
     const [amt, setAmt] = useState(0)
+
+    const onChangeAmt = (e) => {
+        setAmt(e.target.value)
+    }
 
     const onChangeSellCoin = (e) => {
         setSellCoin(e.target.value)
@@ -14,8 +22,11 @@ const ExchangeCoins = () => {
         setBuyCoin(e.target.value)
     }
 
-    const onClickExchange = async () => {
-        const response = await fetch('')
+    const onClickExchange = () => {
+        if (coinListStatus) {
+            console.log(sellCoin, buyCoin)
+            setExRate(((Number(sellCoin) / Number(buyCoin)) * Number(amt)).toFixed(2))
+        }
     }
 
     return (
@@ -26,28 +37,26 @@ const ExchangeCoins = () => {
                     <div className='mx-auto'>
                         <div className='flex flex-row w-80 justify-between'>
                             <p className='text-red-700 font-bold mx-2 my-2'>Sell</p>
-                            <select name="coinSelectorSelling" className='mx-2 my-2 text-gray-500 font-bold' onChange={onChangeSellCoin}>
-                                <option value="BTC">Bitcoin</option>
-                                <option value="ETH">Ethereum</option>
-                                <option value="DOGE">Dogecoin</option>
-                                <option value="ADA">Cardano</option>
+                            <select name="coinSelectorSelling" className='bg-gray-100 rounded-sm mx-2 my-2 text-gray-800 font-bold' onChange={onChangeSellCoin}>
+                                {coinsList.map(element => {
+                                    return <option value={element.current_price} key={element.id}> {element.name} </option>
+                                })}
                             </select>
-                            <input type="number" className="rounded-md border border-gray-300" name="enterAmount" value={amt} onChange={(e) => {setAmt(e.target.value)}}/>
+                            <input type="number" className="rounded-md border border-gray-300 w-full" name="enterAmount" value={amt} onChange={onChangeAmt} />
                         </div>
                         <div className='flex flex-row w-4 justify-between'>
                             <p className='text-green-700 font-bold mx-2 my-2'>Buy</p>
-                            <select name="coinSelectorBuying" className='mx-2 my-2 text-gray-500 font-bold' onChange={onChangeBuyCoin}>
-                                <option value="ETH">Ethereum</option>
-                                <option value="BTC">Bitcoin</option>
-                                <option value="DOGE">Dogecoin</option>
-                                <option value="ADA">Cardano</option>
+                            <select name="coinSelectorBuying" className='bg-gray-100 rounded-sm mx-2 my-2 text-gray-800 font-bold' onChange={onChangeBuyCoin}>
+                                {coinsList.map(element => {
+                                    return <option value={element.current_price} key={element.id}> {element.name} </option>
+                                })}
                             </select>
-                            <div className='text-green-600 font-bold mx-2 my-2'>{exRate}</div>
+                            <div className='text-green-600 font-bold mx-2 my-2 w-full'>{exRate}</div>
                         </div>
                     </div>
                 </div>
                 <div className='flex flex-col justify-center items-center'>
-                    <button className='bg-blue-700 text-white font-bold p-2.5 rounded-lg my-3 shadow-md shadow-blue-700'>
+                    <button className='bg-blue-600 text-white font-bold p-2.5 rounded-lg my-3 shadow-sm shadow-blue-700 hover:bg-blue-700 hover:shadow-md hover:shadow-blue-700' onClick={onClickExchange}>
                         Exchange
                     </button>
                 </div>

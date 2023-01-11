@@ -1,15 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import selectBaseCurrency from "./baseCurrencySlice"
 
 const initialState = {
     list: [],
-    status :"idle",
+    status: "idle",
     error: null
 }
 
-
-export const fetchCoinsList = createAsyncThunk('coinsList/fetchCoins', async () => {
-    const response = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=${baseCurrency.lowerCase()}&order=market_cap_desc&per_page=100&page=1&sparkline=false`)
-    return response,json()
+export const fetchCoinsList = createAsyncThunk('coinsList/fetchCoinsList', async (baseCurrency) => {
+    // console.log(baseCurrency.currency)
+    const response = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=${baseCurrency}&order=market_cap_desc&per_page=100&page=1&sparkline=false`)
+    const data = await response.json()
+    return data
 })
 
 const coinsListSLice = createSlice({
@@ -18,23 +20,32 @@ const coinsListSLice = createSlice({
     reducers: {},
     extraReducers(builder) {
         builder
-        .addCase(fetchCoinsList.pending, (state, action) => {
-            state.coinsList.status = 'loading'
-        })
-        .addCase(fetchCoinsList.fulfilled, (state, action) => {
-            state.coinsList.status = 'succeeded'
-            state.coinsList.list = action.payload
-        })
-        .addCase(fetchCoinsList.rejected, (state, action) => {
-            state.coinsList.status = 'failed'
-            state.coinsList.error = action.payload
-        })
+            .addCase(fetchCoinsList.pending, (state, action) => {
+                state.status = 'loading'
+            })
+            .addCase(fetchCoinsList.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                state.list = action.payload
+                console.log(state.list)
+            })
+            .addCase(fetchCoinsList.rejected, (state, action) => {
+                console.log(state, action)
+                console.log("shit")
+                state.status = 'failed'
+                state.error = action.error.message
+                console.log(state.coinsList.error)
+            })
+            .addCase('baseCurrency/baseCurrencyChanged', (state, action) => {
+                state.status= 'idle'
+                state.data = []
+            })
     }
 })
 
 export const selectCoinsList = (state) => state.coinsList.list;
+export const selectCoinsListStatus = (state) => state.coinsList.status
 
 export default coinsListSLice.reducer
 
-// write a redux toolkit slice whose initial state is an array and that array is populated with an api such that the api is dependent on another state which can either be "A","B", "C", the default state is "A" but if this gets changed we need to fetch api according to this state and changing our main state accordingly
+
 

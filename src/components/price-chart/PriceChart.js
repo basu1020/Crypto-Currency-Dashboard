@@ -1,13 +1,19 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 import BaseCurrencyOptions from './BaseCurrency'
 import SearchBar from './SearchBar'
 import { Line } from "react-chartjs-2"
 import { Chart as ChartJS } from "chart.js/auto"
 import { CurrencyData } from "./CurrencyData"
+import { selectBaseCurrency } from '../../globalStates/baseCurrencySlice'
+import { selectCoinsList } from '../../globalStates/coinsListSlice'
 
 const PriceChart = () => {
   const [timehorizon, setTimeHorizon] = useState('1D')
   const [crypto, setCrypto] = useState('Bitcoin')
+  const baseCurrency = useSelector(selectBaseCurrency)
+  const coinsList = useSelector(selectCoinsList)
+  const [chartType, setChartType] = useState('Line')
 
   const onClickChangeTimeHorizon = (e) => {
     setTimeHorizon(e.target.value)
@@ -20,7 +26,8 @@ const PriceChart = () => {
         label: "Users Gained",
         data: CurrencyData.map((data) => data.userGain),
         backgroundColor: [
-          "red",
+          "blue",
+          
         ],
       },
     ],
@@ -45,25 +52,32 @@ const PriceChart = () => {
             })}
 
           </div>
+          <div className="flex flex-row  justify-center">
+            <select name="" id="coinSelector" className='px-2 mx-1 my-1 font-semibold text-sm bg-gray-100 rounded-md no-scrollbar' onChange={(e => setCrypto(e.target.value))}>
 
-          <div className="flex flex-row w-2/6 justify-center">
-            <select name="" id="coinSelector" className='px-2 mx-1 my-1 font-semibold bg-gray-100 rounded-md'>
-              <option value="">Bitcoin</option>
+              {coinsList.map(element => {
+                return <option className="bg-gray-100 text-gray-500 font-semibold my-1 hover:bg-gray-200" value={element.name}>{element.name}</option>
+              })}
+
             </select>
-            <select name="" id="chartSelector" className='px-2 mx-1 my-1 font-semibold bg-gray-100 rounded-md'>
-              <option value="">Line Chart</option>
+            <select name="" id="chartSelector" className='px-2 mx-1 my-1 font-semibold text-sm bg-gray-100 rounded-md'>
+
+              {["Line Chart", "Bar Chart Vertical", "Bar Chart Horizontal"].map(element => {
+                return <option className="bg-gray-100 text-gray-500 font-semibold my-1 hover:bg-gray-200" value={element}>{element}</option>
+              })}
+
             </select>
           </div>
 
         </div>
 
         <div className="flex flex-row justify-between">
-          <p className='mx-3 font-semibold'>USD</p>
+          <p className='mx-3 font-semibold'>{baseCurrency.currency}</p>
           <p className='mx-3 font-semibold'>{crypto}</p>
         </div>
 
         <div className='py-1 px-1 h-5/6 flex flex-col justify-center'>
-          <Line data={currencyData} />
+          {<Line data={currencyData} />}
         </div>
       </div>
     </>
