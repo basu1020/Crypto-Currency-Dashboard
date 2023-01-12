@@ -1,23 +1,36 @@
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import BaseCurrencyOptions from './BaseCurrency'
 import SearchBar from './SearchBar'
-import { Line } from "react-chartjs-2"
+import { Line, Bar } from "react-chartjs-2"
 import { Chart as ChartJS } from "chart.js/auto"
 import { CurrencyData } from "./CurrencyData"
 import { selectBaseCurrency } from '../../globalStates/baseCurrencySlice'
 import { selectCoinsList } from '../../globalStates/coinsListSlice'
+import { selectChartList, selectChartListStatus, fetchCoinData } from '../../globalStates/currencyChartDataSlice'
 
 const PriceChart = () => {
-  const [timehorizon, setTimeHorizon] = useState('1D')
-  const [crypto, setCrypto] = useState('Bitcoin')
-  const baseCurrency = useSelector(selectBaseCurrency)
+  const baseCurrency = useSelector(selectBaseCurrency) 
   const coinsList = useSelector(selectCoinsList)
-  const [chartType, setChartType] = useState('Line')
+  const chartList = useSelector(selectChartList)
+  const chartListStatus = useSelector(selectChartListStatus)
+  const [crypto, setCrypto] = useState('Bitcoin')
+
+  const dispatch = useDispatch()
+
+  const [timehorizon, setTimeHorizon] = useState("1D")
+  const [chartType, setChartType] = useState("Line Chart")
 
   const onClickChangeTimeHorizon = (e) => {
     setTimeHorizon(e.target.value)
   }
+
+  useEffect(() => {
+    if(chartListStatus === 'idle'){
+      dispatch(fetchCoinData("bitcoin", "usd", "1D"))
+      console.log("dispatched")
+    }
+  })
 
   const [currencyData, setCurrencyData] = useState({
     labels: CurrencyData.map((data) => data.year),
@@ -27,11 +40,12 @@ const PriceChart = () => {
         data: CurrencyData.map((data) => data.userGain),
         backgroundColor: [
           "blue",
-          
         ],
       },
     ],
   })
+
+  
 
   return (
     <>
@@ -60,7 +74,7 @@ const PriceChart = () => {
               })}
 
             </select>
-            <select name="" id="chartSelector" className='px-2 mx-1 my-1 font-semibold text-sm bg-gray-100 rounded-md'>
+            <select name="" id="chartSelector" className='px-2 mx-1 my-1 font-semibold text-sm bg-gray-100 rounded-md' onChange={(e) => {setChartType(e.target.value)}}>
 
               {["Line Chart", "Bar Chart Vertical", "Bar Chart Horizontal"].map(element => {
                 return <option className="bg-gray-100 text-gray-500 font-semibold my-1 hover:bg-gray-200" value={element}>{element}</option>
@@ -77,7 +91,8 @@ const PriceChart = () => {
         </div>
 
         <div className='py-1 px-1 h-5/6 flex flex-col justify-center'>
-          {<Line data={currencyData} />}
+          {chartType === "Line Chart" && <Line data={currencyData} />}
+          {chartType === "Bar Chart Vertical" && <Bar data={currencyData}/>}
         </div>
       </div>
     </>
