@@ -22,7 +22,8 @@ export const fetchCoinData = createAsyncThunk('currencyChartData/fetchCoinData',
     }
     console.log(interval)
     const response = await fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=${baseCurr}&days=${timeFrame}${interval}`)
-    const data = response.json()
+    const data = await response.json()
+    console.log(data)
     return data.prices
 
     // if (timeFrame === "1D") {
