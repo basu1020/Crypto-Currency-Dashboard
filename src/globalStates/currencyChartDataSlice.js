@@ -1,68 +1,93 @@
-import {createSlice, createAsyncThunk} from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 
 const initialState = {
-    data : [],
-    status : 'idle',
-    error : null
+    list: [],
+    status: 'idle',
+    error: null
 }
 
-export const fetchCoinData = createAsyncThunk('currencyChartData/fetchCoinData', async (cryptoID, vsCurr, timeFrame) => {
-    console.log(vsCurr)
-    if(timeFrame === "1D") {
-        const response = await fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=${vsCurr}&days=1&interval=hourly`)
-        const data = await response.json()
-        console.log(data.prices)
-        return data
+export const fetchCoinData = createAsyncThunk('currencyChartData/fetchCoinData', async (info) => {
+    console.log(info)
+    const [cryptoID, baseCurr, timeFrame] = info
+    let interval;
+
+    if (timeFrame < 7){
+        interval = "&interval=hourly"
     }
-    else if(timeFrame === "1W") {
-        const response = await fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=${vsCurr}&days=7&interval=daily`)
-        const data = await response.json()
-        console.log(data.prices)
-        return data
+    else if (7 <= timeFrame <= 180){
+        interval = "&interval=daily"
     }
-    else if(timeFrame === "1M") {
-        const response = await fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=${vsCurr}&days=30&interval=daily`)
-        const data = await response.json()
-        console.log(data.prices)
-        return data
+    else {
+        interval = ""
     }
-    else if(timeFrame === "6M") {
-        const response = await fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=${vsCurr}&days=180`)
-        const data = await response.json()
-        console.log(data.prices)
-        return data
-    }
-    else if(timeFrame === "1Y") {
-        const response = await fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=${vsCurr}&days=365`)
-        const data = await response.json()
-        console.log(data.prices)
-        return data
-    }
+    console.log(interval)
+    const response = await fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=${baseCurr}&days=${timeFrame}${interval}`)
+    const data = response.json()
+    return data.prices
+
+    // if (timeFrame === "1D") {
+    //     const response = await fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=${baseCurr}&days=1&interval=hourly`)
+    //     const data = await response.json()
+    //     return data.prices
+    // }
+    // else if (timeFrame === "1W") {
+    //     const response = await fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=${baseCurr}&days=7&interval=daily`)
+    //     const data = await response.json()
+    //     return data.prices
+    // }
+    // else if (timeFrame === "1M") {
+    //     const response = await fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=${baseCurr}&days=30&interval=daily`)
+    //     const data = await response.json()
+    //     return data.prices
+    // }
+    // else if (timeFrame === "6M") {
+    //     const response = await fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=${baseCurr}&days=180&interval=monthly`)
+    //     const data = await response.json()
+    //     return data.prices
+    // }
+    // else if (timeFrame === "1Y") {
+    //     const response = await fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=${baseCurr}&days=365`)
+    //     const data = await response.json()
+    //     return data.prices
+    // }
+    // else{
+    //     return []
+    // }
 })
 
-const currencyDataSlice = createSlice({
+const currencyChartDataSlice = createSlice({
     name: 'currencyChartData',
     initialState,
-    reducers:{},
-    extraReducers(builder){
+    reducers: {
+        reFetch: (state, action) => {
+            state.list = []
+            state.status = 'idle'
+        }
+    },
+    extraReducers(builder) {
         builder
             .addCase(fetchCoinData.pending, (state, action) => {
-            state.status = 'pending'
-        })
+                state.status = 'pending'
+            })
             .addCase(fetchCoinData.fulfilled, (state, action) => {
-            state.status = 'succeeded'
-            state.list = action.payload
-            console.log("Ho gaya")
-            console.log(state.list)
-       })
+                state.status = 'succeeded'
+                state.list = action.payload
+                console.log(state.list)
+            })
             .addCase(fetchCoinData.rejected, (state, action) => {
-            state.status = 'failed'
-            state.error = action.error.message
-       })
+                state.status = 'failed'
+                state.error = action.error.message
+            })
+            .addCase('baseCurrency/baseCurrencyChanged', (state, action) => {
+                state.status = 'idle'
+                state.list = []
+            })
     }
 })
 
-export const selectChartList = (state) => state.currencyChartData.list 
-export const selectChartListStatus = (state) => state.currencyChartData.status 
+export const selectChartList = (state) => state.currencyChartData.list;
+export const selectChartListStatus = (state) => state.currencyChartData.status;
 
-export default currencyDataSlice.reducer
+export const {reFetch} = currencyChartDataSlice.actions
+
+export default currencyChartDataSlice.reducer

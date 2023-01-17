@@ -15,7 +15,7 @@ const PriceList = () => {
     useEffect(() => {
         if (!effectRan.current){
             if (coinsListStatus === "idle") {
-                dispatch(fetchCoinsList(baseCurrency.currency.toLowerCase()))
+                dispatch(fetchCoinsList([baseCurrency.currency.toLowerCase(), "Hello World"]))
             }
         }
         

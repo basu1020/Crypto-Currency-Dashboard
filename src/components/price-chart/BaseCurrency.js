@@ -1,11 +1,9 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux' 
-import { baseCurrencyChanged } from '../../globalStates/baseCurrencySlice'
-import { selectBaseCurrency } from '../../globalStates/baseCurrencySlice'
+import { baseCurrencyChanged, selectBaseCurrency } from '../../globalStates/baseCurrencySlice'
 
 const BaseCurrencyOptions = () => {
   const dispatch = useDispatch()
-  const baseCurrency = useSelector(selectBaseCurrency)
 
   const onClickBaseCurrencyChanged = (e) => {
     dispatch(baseCurrencyChanged(e.target.value)) 

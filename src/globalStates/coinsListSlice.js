@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import selectBaseCurrency from "./baseCurrencySlice"
 
 const initialState = {
     list: [],
@@ -7,9 +6,9 @@ const initialState = {
     error: null
 }
 
-export const fetchCoinsList = createAsyncThunk('coinsList/fetchCoinsList', async (baseCurrency) => {
-    // console.log(baseCurrency.currency)
-    const response = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=${baseCurrency}&order=market_cap_desc&per_page=100&page=1&sparkline=false`)
+export const fetchCoinsList = createAsyncThunk('coinsList/fetchCoinsList', async (currArray) => {
+    console.log(currArray)
+    const response = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currArray[0]}&order=market_cap_desc&per_page=100&page=1&sparkline=false`)
     const data = await response.json()
     return data
 })
@@ -37,13 +36,13 @@ const coinsListSLice = createSlice({
             })
             .addCase('baseCurrency/baseCurrencyChanged', (state, action) => {
                 state.status= 'idle'
-                state.data = []
+                state.list = []
             })
     }
 })
 
 export const selectCoinsList = (state) => state.coinsList.list;
-export const selectCoinsListStatus = (state) => state.coinsList.status
+export const selectCoinsListStatus = (state) => state.coinsList.status;
 
 export default coinsListSLice.reducer
 
