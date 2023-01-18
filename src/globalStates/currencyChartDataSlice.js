@@ -9,51 +9,80 @@ const initialState = {
 export const fetchCoinData = createAsyncThunk('currencyChartData/fetchCoinData', async (info) => {
     console.log(info)
     const [cryptoID, baseCurr, timeFrame] = info
-    let interval;
+    const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
-    if (timeFrame < 7){
-        interval = "&interval=hourly"
+    if (timeFrame === "1") {
+        const response = await fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=${baseCurr}&days=1&interval=hourly`)
+        const data = await response.json()
+        const dataArray = data.prices.slice(1, 25)
+
+        const result = dataArray.map(element => {
+            const date = new Date(element[0])
+            element[0] = date.toLocaleTimeString()
+            element[1] = element[1].toFixed(2)
+            return [element[0], Number(element[1])]
+        })
+        return result
     }
-    else if (7 <= timeFrame <= 180){
-        interval = "&interval=daily"
+
+    else if (timeFrame === "7") {
+        const response = await fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=${baseCurr}&days=7&interval=daily`)
+        const data = await response.json()
+        const dataArray = data.prices.slice(0, 7)
+
+        const result = dataArray.map(element => {
+            const date = new Date(element[0])
+            element[0] = weekDays[date.getDay()]
+            element[1] = element[1].toFixed(2)
+            return [element[0], Number(element[1])]
+        })
+        return result
+    }
+    else if (timeFrame === "30") {
+        const response = await fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=${baseCurr}&days=30&interval=daily`)
+        const data = await response.json()
+        const dataArray = data.prices.slice(1, 31)
+
+        const result = dataArray.map(element => {
+            const date = new Date(element[0])
+            element[0] = `${date.toDateString().split(" ")[1]}` + ` ${date.toDateString().split(" ")[2]}`
+            element[1] = element[1].toFixed(2)
+            return [element[0], Number(element[1])]
+        })
+        return result
+    }
+    else if (timeFrame === "180") {
+        const response = await fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=${baseCurr}&days=180&interval=monthly`)
+        const data = await response.json()
+        const dataArray = data.prices.slice(1, 181)
+
+        const result = dataArray.filter((element, index) => {
+            return index % 30 === 0
+        }).map(element => {
+            const date = new Date(element[0])
+            return [months[date.getMonth()], Number(element[1].toFixed(2))]
+        })
+
+        return result
+    }
+    else if (timeFrame === "365") {
+        const response = await fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=${baseCurr}&days=365`)
+        const data = await response.json()
+        const dataArray = data.prices.slice(1, 366)
+
+        const result = dataArray.filter((element, index) => {
+            return index % 30 === 0
+        }).map(element => {
+            const date = new Date(element[0])
+            return [months[date.getMonth()], Number(element[1].toFixed(2))]
+        })
+
+        return result.slice(1, 13)
     }
     else {
-        interval = ""
+        return []
     }
-    console.log(interval)
-    const response = await fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=${baseCurr}&days=${timeFrame}${interval}`)
-    const data = await response.json()
-    console.log(data)
-    return data.prices
-
-    // if (timeFrame === "1D") {
-    //     const response = await fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=${baseCurr}&days=1&interval=hourly`)
-    //     const data = await response.json()
-    //     return data.prices
-    // }
-    // else if (timeFrame === "1W") {
-    //     const response = await fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=${baseCurr}&days=7&interval=daily`)
-    //     const data = await response.json()
-    //     return data.prices
-    // }
-    // else if (timeFrame === "1M") {
-    //     const response = await fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=${baseCurr}&days=30&interval=daily`)
-    //     const data = await response.json()
-    //     return data.prices
-    // }
-    // else if (timeFrame === "6M") {
-    //     const response = await fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=${baseCurr}&days=180&interval=monthly`)
-    //     const data = await response.json()
-    //     return data.prices
-    // }
-    // else if (timeFrame === "1Y") {
-    //     const response = await fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=${baseCurr}&days=365`)
-    //     const data = await response.json()
-    //     return data.prices
-    // }
-    // else{
-    //     return []
-    // }
 })
 
 const currencyChartDataSlice = createSlice({
@@ -89,6 +118,6 @@ const currencyChartDataSlice = createSlice({
 export const selectChartList = (state) => state.currencyChartData.list;
 export const selectChartListStatus = (state) => state.currencyChartData.status;
 
-export const {reFetch} = currencyChartDataSlice.actions
+export const { reFetch } = currencyChartDataSlice.actions
 
 export default currencyChartDataSlice.reducer

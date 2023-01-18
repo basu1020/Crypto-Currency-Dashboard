@@ -7,7 +7,7 @@ import { store } from "./redux-store/store"
 import { Provider } from 'react-redux';
 import { fetchCoinData } from './globalStates/currencyChartDataSlice';
 
-store.dispatch(fetchCoinData(["bitcoin", "usd", 1]))
+store.dispatch(fetchCoinData(["bitcoin", "usd", "1"]))
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
