@@ -39,18 +39,19 @@ const PriceChart = () => {
     return () => {}
   }, [chartListStatus, timehorizon])
 
-  const [currencyData, setCurrencyData] = useState({ 
+  const currencyData = { 
     labels: chartList.map((data) => data[0]),
     datasets: [
       {
         label: "Price Action",
         data: chartList.map((data) => data[1]),
-        backgroundColor: [
-          "blue",
-        ],
+        fill: false,
+        borderColor: 'rgb(75, 192, 192)',
+        backGroundColor: 'rgb(75, 192, 192)',
+        tension: 0.5
       },
     ],
-  })
+  }
 
 
 
