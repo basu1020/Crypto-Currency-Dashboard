@@ -7,7 +7,6 @@ const initialState = {
 }
 
 export const fetchCoinData = createAsyncThunk('currencyChartData/fetchCoinData', async (info) => {
-    console.log(info)
     const [cryptoID, baseCurr, timeFrame] = info
     const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"]
@@ -15,11 +14,12 @@ export const fetchCoinData = createAsyncThunk('currencyChartData/fetchCoinData',
     if (timeFrame === "1") {
         const response = await fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=${baseCurr}&days=1&interval=hourly`)
         const data = await response.json()
+        console.log(data.prices)
         const dataArray = data.prices.slice(1, 25)
 
         const result = dataArray.map(element => {
             const date = new Date(element[0])
-            element[0] = date.toLocaleTimeString()
+            element[0] = `${date.toLocaleTimeString().split(":")[0]}:${date.toLocaleTimeString().split(":")[1]} ${date.toLocaleTimeString().split(":")[2].split(" ")[1]}`
             element[1] = element[1].toFixed(2)
             return [element[0], Number(element[1])]
         })
@@ -102,7 +102,7 @@ const currencyChartDataSlice = createSlice({
             .addCase(fetchCoinData.fulfilled, (state, action) => {
                 state.status = 'succeeded'
                 state.list = action.payload
-                console.log(state.list)
+                // console.log(state.list)
             })
             .addCase(fetchCoinData.rejected, (state, action) => {
                 state.status = 'failed'

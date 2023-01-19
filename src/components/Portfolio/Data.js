@@ -1,6 +1,6 @@
 export const data = [
     {
-    name: "Bitcoin",
+    name: "Polygon",
     amount_invested: 200,
     },
     {

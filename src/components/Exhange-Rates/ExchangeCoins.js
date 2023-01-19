@@ -37,7 +37,7 @@ const ExchangeCoins = () => {
                     <div className='mx-auto'>
                         <div className='flex flex-row w-80 justify-between'>
                             <p className='text-red-700 font-bold mx-2 my-2'>Sell</p>
-                            <select name="coinSelectorSelling" className='bg-gray-100 rounded-sm mx-2 my-2 text-gray-800 font-bold' onChange={onChangeSellCoin}>
+                            <select name="coinSelectorSelling" className='bg-gray-100 rounded-sm mx-2 my-2 text-gray-800 font-semibold' onChange={onChangeSellCoin}>
                                 {coinsList.map(element => {
                                     return <option value={element.current_price} key={element.id}> {element.name} </option>
                                 })}
@@ -46,7 +46,7 @@ const ExchangeCoins = () => {
                         </div>
                         <div className='flex flex-row w-4 justify-between'>
                             <p className='text-green-700 font-bold mx-2 my-2'>Buy</p>
-                            <select name="coinSelectorBuying" className='bg-gray-100 rounded-sm mx-2 my-2 text-gray-800 font-bold' onChange={onChangeBuyCoin}>
+                            <select name="coinSelectorBuying" className='bg-gray-100 rounded-sm mx-2 my-2 text-gray-800 font-semibold' onChange={onChangeBuyCoin}>
                                 {coinsList.map(element => {
                                     return <option value={element.current_price} key={element.id}> {element.name} </option>
                                 })}

@@ -12,9 +12,9 @@ const Portfolio = () => {
         label: "Portfolio",
         data: coinsData.map((data) => data.amount_invested),
         backgroundColor : [
-          "#5360ed",
-          "#ed5372",
-          "#53c271"
+          "rgb(93, 76, 194)",
+          "rgb(46, 72, 143)",
+          "rgb(28, 137, 345)"
         ]
       }
     ]
@@ -26,10 +26,10 @@ const Portfolio = () => {
 
         <div className="flex flex-row justify-between font-bold">
           <h2 className="font-sans text-xl mx-2">Portfolio</h2>
-          <p className='text-xl text-gray-500'>Total Value</p>
+          <p className=' text-gray-400'>Total Value: $1000</p>
         </div>
         <div id="Portfolio-pie-chart" className='h-40 flex flex-col'>
-          <Pie data={chartData}/>
+          <Pie options={{ maintainAspectRatio: false }} data={chartData}/>
         </div>
       </div>
     </>

@@ -41,18 +41,14 @@ const PriceChart = () => {
 
   const currencyData = { 
     labels: chartList.map((data) => data[0]),
-    datasets: [
-      {
-        label: "Price Action",
+    datasets: [{
+        label: `Price in ${baseCurrency.currency}`,
         data: chartList.map((data) => data[1]),
-        fill: false,
-        borderColor: 'rgb(75, 192, 192)',
-        backGroundColor: 'rgb(75, 192, 192)',
-        tension: 0.5
-      },
-    ],
+        backGroundColor: 'rgb(33, 76, 194)',
+        tension: 0.1,
+        pointStyle: false,
+      }],
   }
-
 
 
   return (
@@ -78,7 +74,7 @@ const PriceChart = () => {
             <select name="" id="coinSelector" className='px-2 mx-1 my-1 font-semibold text-sm bg-gray-100 rounded-md no-scrollbar' onChange={onChangeCrypto}>
 
               {coinsList.map((element, index) => {
-                return <option key={index} className="bg-gray-100 text-gray-500 font-semibold my-1 hover:bg-gray-200" value={element.id}>{element.name}</option>
+                return <option key={index} className="bg-gray-100 text-gray-500 font-semibold my-1" value={element.id}>{element.name}</option>
               })}
 
             </select>
@@ -95,12 +91,18 @@ const PriceChart = () => {
 
         <div className="flex flex-row justify-between">
           <p className='mx-3 font-semibold'>{baseCurrency.currency}</p>
-          <p className='mx-3 font-semibold'>{crypto}</p>
+          <p className='mx-3 font-semibold'>{crypto.charAt(0).toUpperCase() + crypto.slice(1)}</p>
         </div>
 
-        <div className='py-1 px-1 h-5/6 flex flex-col justify-center'>
-          {chartType === "Line Chart" && <Line data={currencyData} />}
-          {chartType === "Bar Chart Vertical" && <Bar data={currencyData} />}
+        <div className='py-1 px-1 h-5/6 flex flex-col justify-center w-auto'>
+          {chartType === "Line Chart" && <Line options={{ maintainAspectRatio: false }} data={currencyData} />}
+
+          {chartType === "Bar Chart Vertical" && <Bar options={{ maintainAspectRatio: false }} data={currencyData} />}
+
+          {chartType === "Bar Chart Horizontal" && <Bar options={
+            { maintainAspectRatio: false,
+              indexAxis: 'y'
+          }} data={currencyData} />}
         </div>
       </div>
     </>
