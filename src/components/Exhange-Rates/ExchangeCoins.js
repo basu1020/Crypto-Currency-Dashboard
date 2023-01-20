@@ -32,7 +32,7 @@ const ExchangeCoins = () => {
     return (
         <>
             <div className='mx-2 my-2 w-1/2 rounded-lg bg-white shadow-lg'>
-                <h2 className='text-xl font-bold mx-3 my-3'>Exchange Coins</h2>
+                <h2 className='text-xl font-bold mx-2 my-2'>Exchange Coins</h2>
                 <div className='flex flex-col justify-center align-middle'>
                     <div className='mx-auto'>
                         <div className='flex flex-row w-80 justify-between'>

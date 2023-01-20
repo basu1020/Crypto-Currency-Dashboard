@@ -12,9 +12,9 @@ const Portfolio = () => {
         label: "Portfolio",
         data: coinsData.map((data) => data.amount_invested),
         backgroundColor : [
-          "rgb(93, 76, 194)",
-          "rgb(46, 72, 143)",
-          "rgb(28, 137, 345)"
+          "rgb(93, 76, 194, 0.7)",
+          "rgb(46, 72, 143, 0.7)",
+          "rgb(28, 137, 345, 0.7)"
         ]
       }
     ]
