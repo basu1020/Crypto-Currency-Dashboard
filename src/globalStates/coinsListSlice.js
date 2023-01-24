@@ -6,9 +6,8 @@ const initialState = {
     error: null
 }
 
-export const fetchCoinsList = createAsyncThunk('coinsList/fetchCoinsList', async (currArray) => {
-    console.log(currArray)
-    const response = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currArray[0]}&order=market_cap_desc&per_page=100&page=1&sparkline=false`)
+export const fetchCoinsList = createAsyncThunk('coinsList/fetchCoinsList', async (currBaseCurrency) => {
+    const response = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currBaseCurrency}&order=market_cap_desc&per_page=100&page=1&sparkline=false`)
     const data = await response.json()
     return data
 })
@@ -25,14 +24,10 @@ const coinsListSLice = createSlice({
             .addCase(fetchCoinsList.fulfilled, (state, action) => {
                 state.status = 'succeeded'
                 state.list = action.payload
-                console.log(state.list)
             })
             .addCase(fetchCoinsList.rejected, (state, action) => {
-                console.log(state, action)
-                console.log("shit")
                 state.status = 'failed'
                 state.error = action.error.message
-                console.log(state.coinsList.error)
             })
             .addCase('baseCurrency/baseCurrencyChanged', (state, action) => {
                 state.status= 'idle'

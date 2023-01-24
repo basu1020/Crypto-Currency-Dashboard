@@ -17,9 +17,23 @@ const PriceListItem = (props) => {
             <p className='text-gray-400'>Mkt.Cap: {Intl.NumberFormat('en-US', { style: 'currency', currency: baseCurrency.currency }).format(props.coinMarketCap)} </p>
           </div>
         </div>
-        <div className={
-          props.percentageChange > 0 ? 'mx-4 flex flex-col justify-center font-bold text-green-600' : 'mx-4 flex flex-col justify-center font-bold text-red-500'}>
-          {props.percentageChange} %
+        <div className='flex flex-col justify-center'>
+
+        
+        {props.percentageChange > 0 && <div className='mx-4 flex flex-row align-center font-bold text-green-600'>
+          <div className="before:content-['▲'] border-green-600 mx-1">
+          </div>
+          <div>
+            {props.percentageChange.toFixed(4)} %
+          </div>
+        </div>}
+        {props.percentageChange < 0 && <div className='mx-4 flex flex-row align-center font-bold text-red-500'>
+          <div className="before:content-['▼'] border-red-500 mx-1">
+          </div>
+          <div>
+            {props.percentageChange.toFixed(3)} %
+          </div>
+        </div>}
         </div>
       </div>
     </>

@@ -7,14 +7,13 @@ const initialState = {
 }
 
 export const fetchCoinData = createAsyncThunk('currencyChartData/fetchCoinData', async (info) => {
-    const [cryptoID, baseCurr, timeFrame] = info
+    const [cryptoID, baseCurr, timeFrame] = info    //destructuring array
     const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"]
 
     if (timeFrame === "1") {
         const response = await fetch(`https://api.coingecko.com/api/v3/coins/${cryptoID}/market_chart?vs_currency=${baseCurr}&days=1&interval=hourly`)
         const data = await response.json()
-        console.log(data.prices)
         const dataArray = data.prices.slice(1, 25)
 
         const result = dataArray.map(element => {
@@ -109,6 +108,10 @@ const currencyChartDataSlice = createSlice({
                 state.error = action.error.message
             })
             .addCase('baseCurrency/baseCurrencyChanged', (state, action) => {
+                state.status = 'idle'
+                state.list = []
+            })
+            .addCase('currentCoin/coinChange', (state,action) => {
                 state.status = 'idle'
                 state.list = []
             })

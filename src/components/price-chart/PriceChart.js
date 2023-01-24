@@ -4,18 +4,17 @@ import BaseCurrencyOptions from './BaseCurrency'
 import SearchBar from './SearchBar'
 import { Line, Bar } from "react-chartjs-2"
 import { Chart as ChartJS } from "chart.js/auto"
-import { CurrencyData } from "./CurrencyData"
 import { selectBaseCurrency } from '../../globalStates/baseCurrencySlice'
 import { selectCoinsList } from '../../globalStates/coinsListSlice'
 import { selectChartList, selectChartListStatus, fetchCoinData, reFetch } from '../../globalStates/currencyChartDataSlice'
+import { coinChange, selectCurrentCoin } from '../../globalStates/currentCoinSlice'
 
 const PriceChart = () => {
   const baseCurrency = useSelector(selectBaseCurrency)
   const coinsList = useSelector(selectCoinsList)
   const chartList = useSelector(selectChartList)
   const chartListStatus = useSelector(selectChartListStatus)
-  const [crypto, setCrypto] = useState('bitcoin')
-
+  const currentCrypto = useSelector(selectCurrentCoin)
   const dispatch = useDispatch()
 
   const [timehorizon, setTimeHorizon] = useState("1")
@@ -26,14 +25,9 @@ const PriceChart = () => {
     dispatch(reFetch())
   }
 
-  const onChangeCrypto = (e) => {
-    setCrypto(e.target.value)
-    dispatch(reFetch())
-  }
-
   useEffect(() => {
     if (chartListStatus === 'idle') {
-      dispatch(fetchCoinData([crypto.toString(), baseCurrency.currency.toLowerCase(), timehorizon.toString()]))
+      dispatch(fetchCoinData([currentCrypto.coinID, baseCurrency.currency.toLowerCase(), timehorizon.toString()]))
     }
 
     return () => {}
@@ -49,7 +43,6 @@ const PriceChart = () => {
         pointStyle: false,
       }],
   }
-
 
   return (
     <>
@@ -71,10 +64,20 @@ const PriceChart = () => {
 
           </div>
           <div className="flex flex-row  justify-center">
-            <select name="" id="coinSelector" className='px-2 mx-1 my-1 font-semibold text-sm bg-gray-100 rounded-md no-scrollbar' onChange={onChangeCrypto}>
-
+            <select id="coinSelector" data-info=""
+            className='px-2 mx-1 my-1 font-semibold text-sm bg-gray-100 rounded-md no-scrollbar' 
+            onChange={(e) => {
+              const data = e.target.value.split("+")
+              dispatch(coinChange({coinName: data[1], coinID: data[0]}))
+            }}
+            >
               {coinsList.map((element, index) => {
-                return <option key={index} className="bg-gray-100 text-gray-500 font-semibold my-1" value={element.id}>{element.name}</option>
+                return <option key={index} 
+                className="bg-gray-100 text-gray-500 font-semibold my-1"
+                value={`${element.id}+${element.name}`}
+                >
+                  {element.name}
+                </option>
               })}
 
             </select>
@@ -91,7 +94,7 @@ const PriceChart = () => {
 
         <div className="flex flex-row justify-between">
           <p className='mx-3 font-semibold'>{baseCurrency.currency}</p>
-          <p className='mx-3 font-semibold'>{crypto.charAt(0).toUpperCase() + crypto.slice(1)}</p>
+          <p className='mx-3 font-semibold'>{currentCrypto.coinName}</p>
         </div>
 
         <div className='py-1 px-1 h-5/6 flex flex-col justify-center w-auto'>
