@@ -9,15 +9,15 @@ function App() {
   return (
     <>
       <Navbar />
-      <div className="bg-gray-200 my-0 py-0 flex flex-row flex-wrap md:no-scrollbar h-auto">
-        <div className='md:w-2/3 w-screen'>
+      <div className="bg-gray-200 my-0 py-0 flex flex-row flex-wrap md:no-scrollbar h-[95vh]">
+        <div className='w-2/3 md:w-screen'>
           <PriceChart />
-          <div className="flex flex-row justify-evenly">
+          <div className="flex flex-row justify-evenly md:flex-wrap">
             <Portfolio />
             <ExchangeCoins />
           </div>
         </div>
-        <div className='md:h-screen md:w-1/3 w-screen'>
+        <div className='md:h-screen w-1/3 md:w-screen'>
           <PriceList />
         </div>
       </div>

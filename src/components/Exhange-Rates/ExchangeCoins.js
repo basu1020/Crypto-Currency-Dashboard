@@ -31,21 +31,21 @@ const ExchangeCoins = () => {
 
     return (
         <>
-            <div className='mx-2 my-2 w-1/2 rounded-lg bg-white shadow-lg'>
+            <div className='mx-2 my-2 w-1/2 rounded-lg md:w-full bg-white shadow-lg'>
                 <h2 className='text-xl font-bold mx-2 my-2'>Exchange Coins</h2>
                 <div className='flex flex-col justify-center align-middle'>
                     <div className='mx-auto'>
-                        <div className='flex flex-row w-80 justify-between'>
+                        <div className='flex flex-row w-80 justify-center'>
                             <p className='text-red-700 font-bold mx-2 my-2'>Sell</p>
                             <select name="coinSelectorSelling" className='bg-gray-100 rounded-sm mx-2 my-2 text-gray-800 font-semibold' onChange={onChangeSellCoin}>
                                 {coinsList.map(element => {
-                                    return <option value={element.current_price} key={element.id}> {element.name} </option>
+                                    return <option value={element.current_price} key={element.id}>{element.name}</option>
                                 })}
                             </select>
-                            <input type="number" className="rounded-md border border-gray-300 w-full" name="enterAmount" value={amt} onChange={onChangeAmt} />
+                            <input type="number" className="rounded-md border w-full border-gray-300" name="enterAmount" value={amt} onChange={onChangeAmt} />
                         </div>
-                        <div className='flex flex-row w-4 justify-between'>
-                            <p className='text-green-700 font-bold mx-2 my-2'>Buy</p>
+                        <div className='flex flex-row w-80 justify-between'>
+                            <p className='text-green-700 font-bold mx-2 my-2'> Buy </p>
                             <select name="coinSelectorBuying" className='bg-gray-100 rounded-sm mx-2 my-2 text-gray-800 font-semibold' onChange={onChangeBuyCoin}>
                                 {coinsList.map(element => {
                                     return <option value={element.current_price} key={element.id}> {element.name} </option>

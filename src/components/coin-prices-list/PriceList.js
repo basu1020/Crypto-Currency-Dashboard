@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import PriceListItem from './PriceListItem'
 import { fetchCoinsList, selectCoinsListStatus } from '../../globalStates/coinsListSlice'
 import { selectCoinsList } from '../../globalStates/coinsListSlice'
@@ -13,7 +13,7 @@ const PriceList = () => {
     const coinsList = useSelector(selectCoinsList)
 
     useEffect(() => {
-        if (!effectRan.current){
+        if (!effectRan.current) {
             if (coinsListStatus === "idle") {
                 dispatch(fetchCoinsList(baseCurrency.currency.toLowerCase()))
             }
@@ -21,10 +21,9 @@ const PriceList = () => {
         return () => {}
     }, [coinsListStatus])
 
-
     return (
         <>
-            <div className='bg-white mx-2 my-2 rounded-lg md:h-[91vh] overflow-y-auto no-scrollbar'>
+            <div className='bg-white mx-2 my-2 rounded-lg h-[85.5vh] md:h-auto overflow-y-auto no-scrollbar'>
                 <h1 className='text-xl font-bold text-gray-700 bg-white mx-4 my-2 px-1 py-1 rounded-lg'>Cryptocurrencies by market cap</h1>
                 {coinsList &&
                     <div className='flex flex-col'>

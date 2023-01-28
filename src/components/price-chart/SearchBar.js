@@ -52,7 +52,7 @@ const SearchBar = () => {
                                     document.body.style.overflow = 'auto'
                                 }}>
                                 <div className='flex'>
-                                <img src={element.large} alt={`(${element.name}-image)`} className='h-10' />
+                                <img src={element.large} alt={`(${element.name}-image)`} className='h-10 rounded-2xl' />
                                 <p className='mx-2 font-semibold'>{element.name}</p>
                                 </div>
                             </div>)

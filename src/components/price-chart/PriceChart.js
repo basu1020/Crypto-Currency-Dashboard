@@ -50,9 +50,9 @@ const PriceChart = () => {
         <BaseCurrencyOptions />
         <SearchBar />
       </div>
-      <div className='bg-white rounded-lg h-96 mx-3 my-2'>
-        <div className="flex flex-row w-full">
-          <div className="flex flex-row w-4/6 justify-center">
+      <div className="bg-white rounded-lg h-96 md:h-auto mx-3 my-2">
+        <div className="flex flex-row md:flex-col-reverse">
+          <div className="flex flex-row w-4/6 md:w-full justify-center">
 
             {[["1D",1], ["1W", 7], ["1M", 30], ["6M", 180], ["1Y", 365]].map((element, index) => {
               return <button key={index}
