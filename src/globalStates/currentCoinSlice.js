@@ -5,7 +5,7 @@ const initialState = {
     coinID: "bitcoin"
 }
 
-const currentCoinSlice = createSlice({
+export const currentCoinSlice = createSlice({
     name: "currentCoin",
     initialState,
     reducers: {

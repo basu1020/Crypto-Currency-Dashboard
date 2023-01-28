@@ -1,13 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchCoinsList } from "./coinsListSlice";
 
-export const BaseCurrencyinitialState = {
+export const initialState = {
     currency: "USD"
 }
 
-const baseCurrencySlice = createSlice({
+export const baseCurrencySlice = createSlice({
     name: 'baseCurrency',
-    initialState: BaseCurrencyinitialState,
+    initialState,
     reducers: {
         baseCurrencyChanged: (state, action) => {
             state.currency = action.payload

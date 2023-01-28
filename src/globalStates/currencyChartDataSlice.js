@@ -84,7 +84,7 @@ export const fetchCoinData = createAsyncThunk('currencyChartData/fetchCoinData',
     }
 })
 
-const currencyChartDataSlice = createSlice({
+export const currencyChartDataSlice = createSlice({
     name: 'currencyChartData',
     initialState,
     reducers: {
