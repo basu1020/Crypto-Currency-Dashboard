@@ -55,9 +55,10 @@ describe("coinsListSlice", () => {
         })
 
         await store.dispatch(fetchCoinsList(store.getState().baseCurrency.currency))
+
         expect(store.getState().coinsList.status).toEqual("succeeded")
 
-        // for the list it is difficult to foresee what will be the actual list, but as stated in api its size should be 100, so I'll check that
+        // for the list it is difficult to foresee what the actual list will be, but as stated in api its size should be 100, so I'll check exactly that
         expect(store.getState().coinsList.list.length).toEqual(100)
 
         // Now, I'll change the baseCurrency and expect coinsList status to be 'idle'.

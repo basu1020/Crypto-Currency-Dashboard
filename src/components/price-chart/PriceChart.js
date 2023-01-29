@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import BaseCurrencyOptions from './BaseCurrency'
+import BaseCurrencyOptions from './BaseCurrencyOptions'
 import SearchBar from './SearchBar'
 import { Line, Bar } from "react-chartjs-2"
 import { Chart as ChartJS } from "chart.js/auto"

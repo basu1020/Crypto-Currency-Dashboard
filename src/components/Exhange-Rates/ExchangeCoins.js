@@ -24,7 +24,6 @@ const ExchangeCoins = () => {
 
     const onClickExchange = () => {
         if (coinListStatus) {
-            console.log(sellCoin, buyCoin)
             setExRate(((Number(sellCoin) / Number(buyCoin)) * Number(amt)).toFixed(2))
         }
     }
@@ -38,7 +37,7 @@ const ExchangeCoins = () => {
                         <div className='flex flex-row w-80 justify-center'>
                             <p className='text-red-700 font-bold mx-2 my-2'>Sell</p>
                             <select name="coinSelectorSelling" className='bg-gray-100 rounded-sm mx-2 my-2 text-gray-800 font-semibold' onChange={onChangeSellCoin}>
-                                {coinsList.map(element => {
+                                {coinListStatus && coinsList.map(element => {
                                     return <option value={element.current_price} key={element.id}>{element.name}</option>
                                 })}
                             </select>
@@ -47,21 +46,20 @@ const ExchangeCoins = () => {
                         <div className='flex flex-row w-80 justify-between'>
                             <p className='text-green-700 font-bold mx-2 my-2'> Buy </p>
                             <select name="coinSelectorBuying" className='bg-gray-100 rounded-sm mx-2 my-2 text-gray-800 font-semibold' onChange={onChangeBuyCoin}>
-                                {coinsList.map(element => {
-                                    return <option value={element.current_price} key={element.id}> {element.name} </option>
+                                {coinListStatus && coinsList.map(element => {
+                                    return <option value={element.current_price} key={element.id}>{element.name}</option>
                                 })}
                             </select>
-                            <div className='text-green-600 font-bold mx-2 my-2 w-full'>{exRate}</div>
+                            <div name='exchangeRate' className='text-green-600 font-bold mx-2 my-2 w-full'>{exRate}</div>
                         </div>
                     </div>
                 </div>
                 <div className='flex flex-col justify-center items-center'>
-                    <button className='bg-blue-600 text-white font-bold p-2.5 rounded-lg my-3 shadow-sm shadow-blue-700 hover:bg-blue-700 hover:shadow-md hover:shadow-blue-700' onClick={onClickExchange}>
+                    <button name='Exchange' className='bg-blue-600 text-white font-bold p-2.5 rounded-lg my-3 shadow-sm shadow-blue-700 hover:bg-blue-700 hover:shadow-md hover:shadow-blue-700' onClick={onClickExchange}>
                         Exchange
                     </button>
                 </div>
             </div>
-
         </>
     )
 }
