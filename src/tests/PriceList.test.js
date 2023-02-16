@@ -3,7 +3,7 @@ import { render, fireEvent, cleanup, queryByText } from "@testing-library/react"
 import { Provider } from "react-redux"
 import { configureStore } from '@reduxjs/toolkit'
 import PriceList from "../components/Coin-prices-list/PriceList"
-import coinsListReducer, {fetchCoinsList, selectCoinsList} from "../globalStates/coinsListSlice"
+import coinsListReducer, { fetchCoinsList, selectCoinsList } from "../globalStates/coinsListSlice"
 import baseCurrencyReducer from "../globalStates/baseCurrencySlice"
 
 describe('PriceList component', () => {
@@ -23,9 +23,9 @@ describe('PriceList component', () => {
         await store.dispatch(fetchCoinsList("USD"))
 
         component = render(
-        <Provider store={store}>
-            <PriceList />
-        </Provider>)
+            <Provider store={store}>
+                <PriceList />
+            </Provider>)
 
         getByText = component.getByText
         container = component.container
@@ -33,11 +33,11 @@ describe('PriceList component', () => {
 
     afterEach(cleanup)
 
-    
-    it("should render elements" , () => {
+
+    it("should render elements", () => {
         expect(getByText("Cryptocurrencies by market cap")).toBeInTheDocument()
     })
-    
+
     // checking for PriceListItem components, one thing it will have is "Mkt.Cap:" with numbers formatted according to currency 
     // In this test case I am checking the first element 
     it("should render PriceListItem", () => {

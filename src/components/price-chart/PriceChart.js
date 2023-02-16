@@ -64,13 +64,13 @@ const PriceChart = () => {
 
           </div>
           <div className="flex flex-row  justify-center">
-            <select id="coinSelector" data-info=""
+            <select id="coinSelector"
+            data-testid = "coinSelector"
             className='px-2 mx-1 my-1 font-semibold text-sm bg-gray-100 rounded-md no-scrollbar' 
             onChange={(e) => {
               const data = e.target.value.split("+")
               dispatch(coinChange({coinName: data[1], coinID: data[0]}))
-            }}
-            >
+            }}>
               {coinsList.map((element, index) => {
                 return <option key={index} 
                 className="bg-gray-100 text-gray-500 font-semibold my-1"

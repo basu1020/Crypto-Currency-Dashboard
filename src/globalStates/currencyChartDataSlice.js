@@ -18,7 +18,7 @@ export const fetchCoinData = createAsyncThunk('currencyChartData/fetchCoinData',
 
         const result = dataArray.map(element => {
             const date = new Date(element[0])
-            element[0] = `${date.toLocaleTimeString().split(":")[0]}:${date.toLocaleTimeString().split(":")[1]} ${date.toLocaleTimeString().split(":")[2].split(" ")[1]}`
+            element[0] = `${date.toLocaleTimeString()}`
             element[1] = element[1].toFixed(2)
             return [element[0], Number(element[1])]
         })
