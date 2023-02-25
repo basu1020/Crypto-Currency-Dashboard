@@ -42,6 +42,7 @@ const SearchBar = () => {
             }}>
                 <div className="h-[60vh] overflow-x-auto border border-blue-400 w-[70%] mx-auto rounded-md bg-white p-1">
                     <p className='mx-2 my-2 text-lg font-bold'data-testid="search-results-heading">Search Results</p>
+                    {searchedCoins.length > 0 ?
                     <div className='flex flex-col justify-center flex-wrap'>
                         {searchedCoins.map((element, index) => {
                             return (<div className='h-auto p-1 hover:bg-blue-500 hover:text-white'
@@ -57,7 +58,7 @@ const SearchBar = () => {
                                 </div>
                             </div>)
                         })}
-                    </div>
+                    </div> : <p className='font-bold text-lg'>Nothing Found <span> 😅 </span></p>}
                 </div>
             </div> : null}
         </>

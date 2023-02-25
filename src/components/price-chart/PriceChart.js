@@ -81,12 +81,11 @@ const PriceChart = () => {
               })}
 
             </select>
-            <select name="" id="chartSelector" className='px-2 mx-1 my-1 font-semibold text-sm bg-gray-100 rounded-md' onChange={(e) => { setChartType(e.target.value) }}>
+            <select  id="chartSelector" data-testid = "chartSelector" className='px-2 mx-1 my-1 font-semibold text-sm bg-gray-100 rounded-md' onChange={(e) => { setChartType(e.target.value) }}>
 
               {["Line Chart", "Bar Chart Vertical", "Bar Chart Horizontal"].map((element, index) => {
                 return <option key={index} className="bg-gray-100 text-gray-500 font-semibold my-1 hover:bg-gray-200" value={element}>{element}</option>
               })}
-
             </select>
           </div>
 
@@ -97,15 +96,15 @@ const PriceChart = () => {
           <p className='mx-3 font-semibold'>{currentCrypto.coinName}</p>
         </div>
 
-        <div className='py-1 px-1 h-5/6 flex flex-col justify-center w-auto'>
-          {chartType === "Line Chart" && <Line options={{ maintainAspectRatio: false }} data={currencyData} />}
+        <div className='py-1 px-1 h-5/6 flex flex-col justify-center w-auto' data-testid="thediv">
+          {chartType === "Line Chart" && <Line options={{ maintainAspectRatio: false }} data={currencyData} data-testid="line-chart" />}
 
-          {chartType === "Bar Chart Vertical" && <Bar options={{ maintainAspectRatio: false }} data={currencyData} />}
+          {chartType === "Bar Chart Vertical" && <Bar options={{ maintainAspectRatio: false }} data={currencyData} data-testid = "bar-chart" />}
 
           {chartType === "Bar Chart Horizontal" && <Bar options={
             { maintainAspectRatio: false,
               indexAxis: 'y'
-          }} data={currencyData} />}
+          }} data={currencyData} data-testid = "bar-chart-horizontal"/>}
         </div>
       </div>
     </>
