@@ -1,5 +1,7 @@
 # Crypto Currency Dashboard Frontend Project
 
+![Screenshot_20230225_230723](https://user-images.githubusercontent.com/106004070/221373197-acc2d66f-b66a-413f-9fcb-07aace9f3108.png)
+
 Hello All, This is a Crypto currency dashboard project which shows price charts, calculates exchange rates and displays list of top cryptocurrencies according to their market cap. It is created with **React** and **Redux** Javascript libraries, **Tailwind** CSS and utilises **CoinGecko's API** for information.
 
 It is deployed using Netlify - https://cryptodashboardbybasu.netlify.app/
