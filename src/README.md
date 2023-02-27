@@ -106,7 +106,7 @@ const stateOneSlice = createSlice({
             state.current = action.payload
         }
     },
-    extraReducers(builder){ // listening to change in 'stateTwo' by 'stateTwoChanged' reducer. 
+    extraReducers(builder){ // listening to change in 'stateTwo' by 'stateTwoChanged' action. 
         builder
             .addCase('stateTwo/stateTwoChanged', (state, action) => {
                 state.current = "something"
@@ -128,8 +128,8 @@ export default currencyChartDataSlice.reducer // reducers for store
 - Step 4 -> creating redux store - use `configureStore` to create a store like this 
 
  ```javascript
- import stateOneReducer from ".pathTo/stateOneSlice"
- import stateTwoReducer from ".pathTo/stateTwoSlice"
+ import stateOneReducer from "pathTo/stateOneSlice"
+ import stateTwoReducer from "pathTo/stateTwoSlice"
  
  export const store = configureStore({
     reducer: {
@@ -138,3 +138,25 @@ export default currencyChartDataSlice.reducer // reducers for store
     }
 })
  ```` 
+ - Step 5 -> configuring store in `index.js` using `Provider`
+ 
+ ```javascript
+ import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+import { store } from "pathTo/store"
+import { Provider } from 'react-redux';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>
+);
+ ```
+ 
+ 
