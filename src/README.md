@@ -59,7 +59,82 @@ And, this is how these components look like on the website
 
 ![Screenshot_20230227_130536](https://user-images.githubusercontent.com/106004070/221506807-3b222ef4-971b-41c8-a5b2-44e1a3586bd7.png)
 
+
 ## Overview of globalStates folder and redux logic
 
+As soon as I began using redux I was warned that the current way of defining redux logic is depreceated and I must use new `@reduxjs/toolkit` :(
 
+![redux-rtk](https://user-images.githubusercontent.com/106004070/221509222-454a6178-2854-41d7-ad57-8acad945329e.png)
 
+After digging up their documentations and tutorials on Youtube. I was able to understand how to configure reduxjs logic using it and these were the steps recommended by them :-
+
+- Step 1 -> **Create slices** - we can define actions and reducers using `createAction` and `createReducer` but It is recommended we use `createSlice` for each redux state and define 'actions' and 'reducers' inside it like this 
+
+ ```javascript
+ import { createSlice } from "@reduxjs/toolkit";
+
+export const initialState = {
+    current: "current state"
+}
+
+const stateOneSlice = createSlice({
+    name: 'stateOneSlice', 
+    initialState,
+    reducers: {
+        stateOneChanged: (state, action) => {
+            state.current = action.payload
+        }
+    },
+})
+ ```
+ Notice that in `stateOneChanged` reducer I am not returing new state but simply changing it, this is because `@reduxjs/toolkit` uses `Immer.js` under the hood. https://github.com/immerjs/immer
+ 
+- Step 2 -> **Define extraReducers if any** - `extraReducers` help to listen to change in other states in redux store and act according to it, lets say we want to change `stateOne` whenever `stateTwo` changes. 
+
+ ```javascript
+ import { createSlice } from "@reduxjs/toolkit";
+
+export const initialState = {
+    current: "current state"
+}
+
+const stateOneSlice = createSlice({
+    name: 'stateOneSlice', 
+    initialState,
+    reducers: {
+        stateOneChanged: (state, action) => {
+            state.current = action.payload
+        }
+    },
+    extraReducers(builder){ // listening to change in 'stateTwo' by 'stateTwoChanged' reducer. 
+        builder
+            .addCase('stateTwo/stateTwoChanged', (state, action) => {
+                state.current = "something"
+            })
+    }
+})
+ ```
+
+- Step 3 -> **export Reducers, Actions and State** - below is the recommended way of exporting reducers for store, actions to call from your component and state to be used by `useSelector` hook  
+
+```javascript
+export const selectStateOneCurrent = (state) => state.stateOne.current // state to be used in components using 'useSelector'
+
+export const { reFetch } = currencyChartDataSlice.actions // actions to be dispatched from components using 'useDispatch'
+
+export default currencyChartDataSlice.reducer // reducers for store
+```
+
+- Step 4 -> creating redux store - use `configureStore` to create a store like this 
+
+ ```javascript
+ import stateOneReducer from ".pathTo/stateOneSlice"
+ import stateTwoReducer from ".pathTo/stateTwoSlice"
+ 
+ export const store = configureStore({
+    reducer: {
+        stateOne : stateOneReducer, // names should be equal to the names in respective slices. 
+        stateTwo : stateTwoReducer,
+    }
+})
+ ```` 
