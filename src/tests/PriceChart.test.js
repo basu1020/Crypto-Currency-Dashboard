@@ -39,8 +39,6 @@ describe('PriceChart Componenent', () => {
         getByText = component.getByText
         paragraphElement = component.container.querySelectorAll("p")
         lineChart = component.getByTestId("line-chart")
-        // barChart = component.getByTestId("bar-chart")
-        // barChartHorizontal = component.getByTestId("bar-chart-horizontal")
         chartSelector = component.getByTestId("chartSelector")
     })
 
@@ -66,13 +64,13 @@ describe('PriceChart Componenent', () => {
             expect(lineChart).toBeInTheDocument()
 
             // changing chart type to bar chart
-            fireEvent.change(chartSelector, {target: {value: 'Bar Chart Vertical'}})
+            fireEvent.change(chartSelector, { target: { value: 'Bar Chart Vertical' } })
             const barChart = component.getByTestId("bar-chart")
             expect(lineChart).not.toBeInTheDocument()
             expect(barChart).toBeInTheDocument()
 
             // changing chart type of bar chart horizontal
-            fireEvent.change(chartSelector, {target: {value: 'Bar Chart Horizontal'}})
+            fireEvent.change(chartSelector, { target: { value: 'Bar Chart Horizontal' } })
             const barChartHorizontal = component.getByTestId('bar-chart-horizontal')
             expect(barChart).not.toBeInTheDocument()
             expect(barChartHorizontal).toBeInTheDocument()

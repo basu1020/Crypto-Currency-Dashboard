@@ -30,10 +30,10 @@ describe('SearchBar Component', () => {
         SearchModal = component.container.querySelector("[name='searchModal']")
     })
 
-    it("Should set the showSearchModal to true if Search Button is clicked", async () => {
-        // fireEvent.change(InputArea, { target: { value: "BTC" } })
-        // fireEvent.click(SearchButton)
-        // const { getByPlaceholderText, getByText, getByTestId } = component
-        // expect(getByText('/Search Results/')).toBeInTheDocument()
+    it("Should show the search modal if Search Button is clicked", async () => {
+        fireEvent.change(InputArea, { target: { value: "BTC" } })
+        fireEvent.click(SearchButton)
+        const { getByText } = component
+        expect(getByText(/Search Results/)).toBeInTheDocument()
     })
 })
