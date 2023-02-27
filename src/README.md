@@ -28,7 +28,7 @@ By default it has an `index.js`, `index.css`, `App.css`, `reportWebVitals.js` an
     - `BaseCurrencyOptions.js`
     - `PriceChart.js`
     - `SearchBar.js`
-
+    
 - Navbar.js 
 
 
