@@ -89,7 +89,7 @@ const stateOneSlice = createSlice({
  ```
  Notice that in `stateOneChanged` reducer I am not returing new state but simply changing it, this is because `@reduxjs/toolkit` uses `Immer.js` under the hood. https://github.com/immerjs/immer
  
-- Step 2 -> **Define extraReducers if any** - `extraReducers` help to listen to change in other states in redux store and act according to it, lets say we want to change `stateOne` whenever `stateTwo` changes. 
+- Step 2 -> **Define extraReducers if any** - `extraReducers` help to listen to other actions in other states in redux store and act according to it, lets say we want to change `stateOne` whenever `stateTwoChanged` action of `stateTwo` state is called. 
 
  ```javascript
  import { createSlice } from "@reduxjs/toolkit";
@@ -159,4 +159,13 @@ root.render(
 );
  ```
  
- 
+### Contents of the globalStates folder 
+
+globalStates folder has four slices representing four states in redux. 
+
+- `baseCurrencySlice.js` - state for current `baseCurrency` selected in the project, by default it is "USD"
+- `currentCoinSlice.js` - state depicting 'currentCoin', by default it is "Bitcoin"
+- `currencyChartDataSlice.js` - its a state representation of chart data needed for `Charts.js` according to time horizons (1 Day, 1 Week, 1 Month, 6 Months, 1 Year)
+- `coinsList` - this state depicts the list of coins according to their market cap and `baseCurrency`
+
+Alright, I have provided additional details in the Reamde file inside the `globalStates` folder. 
