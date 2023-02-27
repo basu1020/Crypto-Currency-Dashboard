@@ -97,7 +97,7 @@ export default App;
 
 This is the architecture App.js is following 
 
-![Screenshot_20230227_193401](https://user-images.githubusercontent.com/106004070/221584408-42b8ee7e-bce5-4f0b-929e-d419484f4edd.png)
+![AppjsOVerviewV2](https://user-images.githubusercontent.com/106004070/221587033-3104e8b7-cae3-427b-8973-405109ad2cde.png)
 
 ## Overview of globalStates folder and redux logic
 
