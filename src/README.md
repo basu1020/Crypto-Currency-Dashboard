@@ -59,6 +59,45 @@ And, this is how these components look like on the website
 
 ![Screenshot_20230227_130536](https://user-images.githubusercontent.com/106004070/221506807-3b222ef4-971b-41c8-a5b2-44e1a3586bd7.png)
 
+## App.js code details
+
+After chucking out default `App.js` code, this is how I setted it up 
+
+```javascript
+import './App.css';
+import PriceList from './components/Coin-prices-list/PriceList';
+import ExchangeCoins from './components/Exhange-Rates/ExchangeCoins';
+import Portfolio from './components/Portfolio/Portfolio';
+import PriceChart from './components/Price-chart/PriceChart';
+import Navbar from './components/Navbar';
+
+function App() {
+  return (
+    <>
+      <Navbar />
+      <div className="bg-gray-200 my-0 py-0 flex flex-row flex-wrap md:no-scrollbar h-[95vh]">
+        <div className='w-2/3 md:w-screen'>
+          <PriceChart />
+          <div className="flex flex-row justify-evenly md:flex-wrap">
+            <Portfolio />
+            <ExchangeCoins />
+          </div>
+        </div>
+        <div className='md:h-screen w-1/3 md:w-screen'>
+          <PriceList />
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default App;
+
+```
+
+This is the architecture App.js is following 
+
+![Screenshot_20230227_193401](https://user-images.githubusercontent.com/106004070/221584408-42b8ee7e-bce5-4f0b-929e-d419484f4edd.png)
 
 ## Overview of globalStates folder and redux logic
 
@@ -120,9 +159,9 @@ const stateOneSlice = createSlice({
 ```javascript
 export const selectStateOneCurrent = (state) => state.stateOne.current // state to be used in components using 'useSelector'
 
-export const { reFetch } = currencyChartDataSlice.actions // actions to be dispatched from components using 'useDispatch'
+export const { reFetch } = stateOneSlice.actions // actions to be dispatched from components using 'useDispatch'
 
-export default currencyChartDataSlice.reducer // reducers for store
+export default stateOneSlice.reducer // reducers for store
 ```
 
 - Step 4 -> creating redux store - use `configureStore` to create a store like this 
@@ -164,8 +203,35 @@ root.render(
 globalStates folder has four slices representing four states in redux. 
 
 - `baseCurrencySlice.js` - state for current `baseCurrency` selected in the project, by default it is "USD"
-- `currentCoinSlice.js` - state depicting 'currentCoin', by default it is "Bitcoin"
-- `currencyChartDataSlice.js` - its a state representation of chart data needed for `Charts.js` according to time horizons (1 Day, 1 Week, 1 Month, 6 Months, 1 Year)
-- `coinsList` - this state depicts the list of coins according to their market cap and `baseCurrency`
+- `currentCoinSlice.js` - state depicting current crypto currency selected for viewing in `PriceChart`, by default it is "Bitcoin"
+- `currencyChartDataSlice.js` - its a state representation of chart data needed for charts from `Charts.js` library according to time horizons (1 Day, 1 Week, 1 Month, 6 Months, 1 Year) and current crypto currency selected. 
+- `coinsList` - this state depicts the list of coins according to their market cap and `baseCurrency` 
 
-Alright, I have provided additional details in the Reamde file inside the `globalStates` folder. 
+Additional details for each slice is in the Reamde file in the `globalStates` folder. 
+
+## redux-store folder overview 
+
+redux-store folder contains `store.js` where I have created store using `configureStore`. 
+
+```javascript
+import { configureStore } from "@reduxjs/toolkit";
+import baseCurrenyReducer from '../globalStates/baseCurrencySlice'
+import coinsListReducer from '../globalStates/coinsListSlice'
+import currencyChartDataReducer from '../globalStates/currencyChartDataSlice'
+import currentCoinReducer from "../globalStates/currentCoinSlice"
+
+export const store = configureStore({
+    reducer: {
+        baseCurrency: baseCurrenyReducer,
+        coinsList: coinsListReducer,
+        currencyChartData: currencyChartDataReducer,
+        currentCoin: currentCoinReducer
+    }
+})
+```
+
+after creating the `store` I configured it in `index.js` just as shown in Step 5 of previous mentioned steps for configuring `@reduxjs/tookit`
+
+## tests Overview
+
+Suitable test cases are written for components using pre-installed `@testing-library/react` in `tests` folder
