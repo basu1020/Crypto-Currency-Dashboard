@@ -9,7 +9,7 @@ const Portfolio = () => {
     labels: coinsData.map((data) => data.name),
     datasets:[
       {
-        label: "Portfolio",
+        label: "value in $",
         data: coinsData.map((data) => data.amount_invested),
         backgroundColor : [
           "rgb(93, 76, 194, 0.7)",

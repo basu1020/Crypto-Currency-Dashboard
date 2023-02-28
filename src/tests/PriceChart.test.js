@@ -9,6 +9,7 @@ import baseCurrencyReducer from "../globalStates/baseCurrencySlice"
 import PriceChart from "../components/Price-chart/PriceChart";
 import '@testing-library/jest-dom/extend-expect';
 
+// Describing a test suite for PriceChart Component
 describe('PriceChart Componenent', () => {
     let store
     let component
@@ -18,7 +19,9 @@ describe('PriceChart Componenent', () => {
     let lineChart
     let chartSelector
 
+    // Setting up the store and rendering the component before running any tests
     beforeAll(async () => {
+        // Creating a new Redux store with reducers
         store = configureStore({
             reducer: {
                 coinsList: coinsListReducer,
@@ -28,13 +31,16 @@ describe('PriceChart Componenent', () => {
             },
         })
 
+        // Dispatching actions to fetch the coins list and coin data
         await store.dispatch(fetchCoinsList("USD"))
         await store.dispatch(fetchCoinData(["bitcoin", "usd", "1"]))
 
+         // Rendering the PriceChart component wrapped inside a Provider with the store as a prop
         component = render(<Provider store={store}>
             <PriceChart />
         </Provider>)
 
+        // Getting the necessary elements from the rendered component
         coinSelectorElement = component.getByTestId("coinSelector")
         getByText = component.getByText
         paragraphElement = component.container.querySelectorAll("p")
@@ -42,13 +48,16 @@ describe('PriceChart Componenent', () => {
         chartSelector = component.getByTestId("chartSelector")
     })
 
+    // Cleaning up the rendered component after running all tests
     afterAll(cleanup)
 
+    // Testing whether the current baseCurrency and current coin are rendered correctly
     it("should render current baseCurrency, current coin", () => {
         expect(paragraphElement[0]).toHaveTextContent("USD")
         expect(paragraphElement[1]).toHaveTextContent("Bitcoin")
     })
 
+    // Testing whether selecting a different coin option from the coin selector changes the current coin and dispatches it to the store
     it("should change and dispatch coins upon selecting different options from coins list", async () => {
         coinSelectorElement.addEventListener('change', (e) => {
             const data = e.target.value.split("+")
@@ -59,6 +68,7 @@ describe('PriceChart Componenent', () => {
         expect(store.getState().currentCoin.coinName).toBe('Ethereum')
     })
 
+    // Testing whether selecting a different chart type from the chart selector renders the correct chart
     it("should render charts and change when selecting different chart options", async () => {
         setTimeout(() => {
             expect(lineChart).toBeInTheDocument()

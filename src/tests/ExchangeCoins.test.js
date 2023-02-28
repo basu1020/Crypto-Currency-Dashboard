@@ -6,6 +6,7 @@ import ExchangeCoins from '../components/Exhange-Rates/ExchangeCoins'
 
 const mockStore = configureStore([])
 
+// Describing the ExchangeCoins component test suite
 describe('ExchangeCoins', () => {
     let store
     let component
@@ -25,18 +26,22 @@ describe('ExchangeCoins', () => {
             }
         })
 
+        // Rendering the ExchangeCoins component with the mock store wrapped in Provider
         component = render(
             <Provider store={store}>
                 <ExchangeCoins />
             </Provider>
         )
+        // Setting the getByText function to the value returned by the render function
         getByText = component.getByText
     })
 
+    // Testing the correct title is displayed
     it('should display the correct title', () => {
         expect(getByText('Exchange Coins')).toBeInTheDocument()
     })
 
+    // Testing that the select options render with the correct coin names
     it('should render the select options with the correct coin names', () => {
         const sellCoinSelect = component.container.querySelector("[name='coinSelectorSelling']")
         const buyCoinSelect = component.container.querySelector("[name='coinSelectorBuying']")
@@ -48,6 +53,7 @@ describe('ExchangeCoins', () => {
         expect(buyCoinSelect.children[2].textContent).toBe('Litecoin')
     })
 
+    // Testing that the exchange rate updates when the exchange button is clicked
     it('should update the exchange rate when the exchange button is clicked', () => {
         const sellCoinSelect = component.container.querySelector("[name='coinSelectorSelling']")
         const buyCoinSelect = component.container.querySelector("[name='coinSelectorBuying']")
@@ -60,6 +66,7 @@ describe('ExchangeCoins', () => {
         expect(component.container.querySelector("[name='exchangeRate']").textContent).toBe('150.00')
     })
 
+    // Testing that the exchange rate does not update if the coinListStatus is false
     it('should not update the exchange rate if the coinListStatus is false', () => {
 
         // creating a mock empty store with coinsList state which has no data.

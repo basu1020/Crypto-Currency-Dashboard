@@ -33,7 +33,6 @@ describe('PriceList component', () => {
 
     afterEach(cleanup)
 
-
     it("should render elements", () => {
         expect(getByText("Cryptocurrencies by market cap")).toBeInTheDocument()
     })
