@@ -6,8 +6,8 @@ const ExchangeCoins = () => {
     const coinsList = useSelector(selectCoinsList)
     const coinListStatus = useSelector(selectCoinsListStatus)
     const [exRate, setExRate] = useState(0)
-    const [buyCoin, setBuyCoin] = useState(1)
-    const [sellCoin, setSellCoin] = useState(1)
+    const [buyCoin, setBuyCoin] = useState()
+    const [sellCoin, setSellCoin] = useState()
     const [amt, setAmt] = useState(0)
 
     const onChangeAmt = (e) => {
@@ -36,7 +36,9 @@ const ExchangeCoins = () => {
                     <div className='mx-auto'>
                         <div className='flex flex-row w-80 justify-center'>
                             <p className='text-red-700 font-bold mx-2 my-2'>Sell</p>
-                            <select name="coinSelectorSelling" className='bg-gray-100 rounded-sm mx-2 my-2 text-gray-800 font-semibold' onChange={onChangeSellCoin}>
+                            <select name="coinSelectorSelling" className='bg-gray-100 rounded-sm mx-2 my-2 text-gray-800 font-semibold'
+                            onChange={onChangeSellCoin}>
+                                <option disabled selected>Select a coin</option>
                                 {coinListStatus && coinsList.map(element => {
                                     return <option value={element.current_price} key={element.id}>{element.name}</option>
                                 })}
@@ -45,7 +47,9 @@ const ExchangeCoins = () => {
                         </div>
                         <div className='flex flex-row w-80 justify-between'>
                             <p className='text-green-700 font-bold mx-2 my-2'> Buy </p>
-                            <select name="coinSelectorBuying" className='bg-gray-100 rounded-sm mx-2 my-2 text-gray-800 font-semibold' onChange={onChangeBuyCoin}>
+                            <select name="coinSelectorBuying" className='bg-gray-100 rounded-sm mx-2 my-2 text-gray-800 font-semibold'
+                            onChange={onChangeBuyCoin}>
+                                <option disabled selected>Select a coin</option>
                                 {coinListStatus && coinsList.map(element => {
                                     return <option value={element.current_price} key={element.id}>{element.name}</option>
                                 })}
@@ -55,7 +59,7 @@ const ExchangeCoins = () => {
                     </div>
                 </div>
                 <div className='flex flex-col justify-center items-center'>
-                    <button name='Exchange' className='bg-blue-600 text-white font-bold p-2.5 rounded-lg my-3 shadow-sm shadow-blue-700 hover:bg-blue-700 hover:shadow-md hover:shadow-blue-700' onClick={onClickExchange}>
+                    <button name='Exchange' className='bg-blue-600 text-white font-bold p-2.5 rounded-lg my-3 shadow-sm shadow-blue-700 hover:bg-blue-700 hover:shadow-md hover:shadow-blue-700' onClick={onClickExchange} disabled={!buyCoin || !sellCoin} >
                         Exchange
                     </button>
                 </div>
