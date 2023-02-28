@@ -29,7 +29,7 @@ const Portfolio = () => {
           <p className=' text-gray-400'>Total Value: $1000</p>
         </div>
         <div id="Portfolio-pie-chart" className='h-40 flex flex-col'>
-          <Pie options={{ maintainAspectRatio: false }} data={chartData}/>
+          <Pie options={{ maintainAspectRatio: false }} data={chartData} data-testid='portfolio-pie-chart'/>
         </div>
       </div>
     </>
