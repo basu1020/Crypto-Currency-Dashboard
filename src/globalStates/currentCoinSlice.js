@@ -5,6 +5,7 @@ const initialState = {
     coinID: "bitcoin"
 }
 
+//slice for current coin state. 
 export const currentCoinSlice = createSlice({
     name: "currentCoin",
     initialState,
@@ -16,6 +17,7 @@ export const currentCoinSlice = createSlice({
     }
 })
 
+//exporting reducer by default, actions and selectors
 export default currentCoinSlice.reducer
 export const { coinChange } = currentCoinSlice.actions
 export const selectCurrentCoin = (state) => state.currentCoin

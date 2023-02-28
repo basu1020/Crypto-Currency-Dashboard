@@ -1,5 +1,5 @@
 import './App.css';
-import PriceList from './components/Coin-prices-list/PriceList';
+import CoinsList from './components/Coin-prices-list/PriceList';
 import ExchangeCoins from './components/Exhange-Rates/ExchangeCoins';
 import Portfolio from './components/Portfolio/Portfolio';
 import PriceChart from './components/Price-chart/PriceChart';
@@ -18,7 +18,7 @@ function App() {
           </div>
         </div>
         <div className='md:h-screen w-1/3 md:w-screen'>
-          <PriceList />
+          <CoinsList />
         </div>
       </div>
     </>

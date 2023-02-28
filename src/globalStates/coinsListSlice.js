@@ -6,6 +6,13 @@ const initialState = {
     error: null
 }
 
+/**
+ * fetchCoinsList - An async thunk that fetches a list of coins with their information from the Coingecko API.
+ *
+ * @param {string} currBaseCurrency - The current base currency to compare against (e.g. "USD", "EUR", "INR").
+ * @returns {Array} - An array of objects representing the coins, with properties such as "id", "symbol", "name", etc.
+ */
+
 export const fetchCoinsList = createAsyncThunk('coinsList/fetchCoinsList', async (currBaseCurrency) => {
     const response = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currBaseCurrency}&order=market_cap_desc&per_page=100&page=1&sparkline=false`)
     const data = await response.json()
@@ -18,6 +25,7 @@ export const coinsListSLice = createSlice({
     reducers: {},
     extraReducers(builder) {
         builder
+            // handling state conditions during each three stages of the promise of `fetchCoinsList`
             .addCase(fetchCoinsList.pending, (state, action) => {
                 state.status = 'loading'
             })
@@ -29,6 +37,8 @@ export const coinsListSLice = createSlice({
                 state.status = 'failed'
                 state.error = action.error.message
             })
+
+            // It is also listening to change in baseCurrency.
             .addCase('baseCurrency/baseCurrencyChanged', (state, action) => {
                 state.status= 'idle'
                 state.list = []
@@ -36,9 +46,10 @@ export const coinsListSLice = createSlice({
     }
 })
 
+
+//exporting reducer by default and selectors
 export const selectCoinsList = (state) => state.coinsList.list;
 export const selectCoinsListStatus = (state) => state.coinsList.status;
-
 export default coinsListSLice.reducer
 
 

@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react'
-import PriceListItem from './PriceListItem'
+import CoinsListItem from './CoinsListItem'
 import { fetchCoinsList, selectCoinsListStatus } from '../../globalStates/coinsListSlice'
 import { selectCoinsList } from '../../globalStates/coinsListSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectBaseCurrency } from '../../globalStates/baseCurrencySlice'
 
-const PriceList = () => {
+const CoinsList = () => {
     const effectRan = useRef(false)
     const dispatch = useDispatch()
     const baseCurrency = useSelector(selectBaseCurrency)
@@ -28,7 +28,7 @@ const PriceList = () => {
                 {coinsList ?
                     <div className='flex flex-col'>
                         {coinsList.map(elem => {
-                            return <PriceListItem
+                            return <CoinsListItem
                                 key={elem.symbol} coinName={elem.name}
                                 coinMarketCap={elem.market_cap} percentageChange={elem.market_cap_change_percentage_24h} image={elem.image} />
                         })}
@@ -38,4 +38,4 @@ const PriceList = () => {
     )
 }
 
-export default PriceList
+export default CoinsList

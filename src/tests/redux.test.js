@@ -58,7 +58,7 @@ describe("coinsListSlice", () => {
 
         expect(store.getState().coinsList.status).toEqual("succeeded")
 
-        // for the list it is difficult to foresee what the actual list will be, but as stated in api its size should be 100, so I'll check exactly that
+        // for the list it is difficult to foresee what the actual list will be, but as stated in API its size should be 100, so I'll check exactly that
         expect(store.getState().coinsList.list.length).toEqual(100)
 
         // Now, I'll change the baseCurrency and expect coinsList status to be 'idle'.
@@ -87,7 +87,7 @@ describe("currencyChartDataSlice", () => {
         // as in coinsList I will simply check if the list's length is greater than 0 or not. 
         expect(store.getState().currencyChartData.list.length).toBeGreaterThan(0)
 
-        // Testing 'reFetch'
+        // Testing 'reFetch' action. 
         store.dispatch(currencyChartDataSlice.actions.reFetch())
         expect(store.getState().currencyChartData.status).toEqual('idle')
         expect(store.getState().currencyChartData.list).toEqual([])

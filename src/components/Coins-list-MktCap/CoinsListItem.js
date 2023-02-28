@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { selectBaseCurrency } from '../../globalStates/baseCurrencySlice'
 
-const PriceListItem = (props) => {
+const CoinsListItem = (props) => {
   const baseCurrency = useSelector(selectBaseCurrency)
 
   return (
@@ -40,4 +40,4 @@ const PriceListItem = (props) => {
   )
 }
 
-export default PriceListItem
+export default CoinsListItem
