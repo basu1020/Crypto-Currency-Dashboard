@@ -4,14 +4,14 @@ This directory contains the source code for the project. This is a standard Reac
 
 By default it has an `index.js`, `index.css`, `App.css`, `reportWebVitals.js` and `App.js`. 
 
-## Overview folders created in **src**
+# Folders created in **src**
 
 - `components` -  It has all the different **JSX components**. 
 - `globalStates` - It has **Redux slices** for different redux states used throughout various components.  
 - `redux-store` - It has `store.js` file  with **Redux store** logic. 
-- `tests` - As the name suggests, It contains test cases of various components which can be initiated by executing `npm run build` 
+- `tests` - As the name suggests, It contains test cases of various components amd redux states.
 
-## Structure of **components** folder 
+# Structure of **components** folder 
 
 - Coin-prices-list
     - `CoinsList.js`
@@ -59,7 +59,7 @@ And, this is how these components look like on the website
 
 ![Screenshot_20230227_130536](https://user-images.githubusercontent.com/106004070/221506807-3b222ef4-971b-41c8-a5b2-44e1a3586bd7.png)
 
-## App.js code details
+# App.js code details
 
 After chucking out default `App.js` code, this is how I setted it up 
 
@@ -99,13 +99,13 @@ This is the architecture App.js is following
 
 ![AppjsOVerviewV2](https://user-images.githubusercontent.com/106004070/221587033-3104e8b7-cae3-427b-8973-405109ad2cde.png)
 
-## Overview of globalStates folder and redux logic
+# Overview of globalStates folder and redux logic
 
 As soon as I began using redux I was warned that the current way of defining redux logic is depreceated and I must use new `@reduxjs/toolkit` :(
 
 ![redux-rtk](https://user-images.githubusercontent.com/106004070/221509222-454a6178-2854-41d7-ad57-8acad945329e.png)
 
-After digging up their documentations and tutorials on Youtube. I was able to understand how to configure reduxjs logic using it and these were the steps recommended by them :-
+After digging up their documentations and tutorials on Youtube. I was able to understand how to configure reduxjs logic using `@reduxjs/toolkit` and these were the steps recommended by them :-
 
 - Step 1 -> **Create slices** - we can define actions and reducers using `createAction` and `createReducer` but It is recommended we use `createSlice` for each redux state and define 'actions' and 'reducers' inside it like this 
 
@@ -117,7 +117,7 @@ export const initialState = {
 }
 
 const stateOneSlice = createSlice({
-    name: 'stateOneSlice', 
+    name: 'stateOne', 
     initialState,
     reducers: {
         stateOneChanged: (state, action) => {
@@ -138,7 +138,7 @@ export const initialState = {
 }
 
 const stateOneSlice = createSlice({
-    name: 'stateOneSlice', 
+    name: 'stateOne', 
     initialState,
     reducers: {
         stateOneChanged: (state, action) => {
@@ -164,7 +164,7 @@ export const { reFetch } = stateOneSlice.actions // actions to be dispatched fro
 export default stateOneSlice.reducer // reducers for store
 ```
 
-- Step 4 -> creating redux store - use `configureStore` to create a store like this 
+- Step 4 -> **creating redux store** -> use `configureStore` to create a store like this 
 
  ```javascript
  import stateOneReducer from "pathTo/stateOneSlice"
@@ -177,7 +177,7 @@ export default stateOneSlice.reducer // reducers for store
     }
 })
  ```` 
- - Step 5 -> configuring store in `index.js` using `Provider`
+ - Step 5 -> **configuring store in** `index.js` **using** `Provider`
  
  ```javascript
  import React from 'react';
@@ -198,9 +198,58 @@ root.render(
 );
  ```
  
-### Contents of the globalStates folder 
+ ## Creating Async logic in slices
+ 
+ - Async logic can be configured using `createAsyncThunk`, It is a function that simplifies the process of defining async logic for Redux actions. It generates a thunk that can be dispatched to the Redux store, and it automatically dispatches the pending, fulfilled, and rejected actions based on the outcome of the async logic.
+ 
+- for example in `coinsListSlice` in `globalStates` folder, `fetchCoinsList` is an async thunk which fetches a list of coins from the Coingecko API based on a provided `currBaseCurrency` parameter. The thunk dispatches three actions: `coinsList/fetchCoinsList/pending`, `coinsList/fetchCoinsList/fulfilled`, and `coinsList/fetchCoinsList/rejected`. 
 
-globalStates folder has four slices representing four states in redux. 
+- During each stage of the promise of fetchCoinsList, the `extraReducers` method in the slice's definition handles state updates to reflect the current status of the promise.
+
+```javascript
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+
+const initialState = {
+    list: [],
+    status: "idle",
+    error: null
+}
+
+export const fetchCoinsList = createAsyncThunk('coinsList/fetchCoinsList', async (currBaseCurrency) => {
+    const response = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currBaseCurrency}&order=market_cap_desc&per_page=100&page=1&sparkline=false`)
+    const data = await response.json()
+    return data
+})
+
+export const coinsListSLice = createSlice({
+    name: 'coinsList',
+    initialState,
+    reducers: {},
+    extraReducers(builder) {
+        builder
+            // handling state conditions during each three stages of the promise of `fetchCoinsList`
+            .addCase(fetchCoinsList.pending, (state, action) => {
+                state.status = 'loading'
+            })
+            .addCase(fetchCoinsList.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                state.list = action.payload
+            })
+            .addCase(fetchCoinsList.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
+    }
+})
+
+export const selectCoinsList = (state) => state.coinsList.list;
+export const selectCoinsListStatus = (state) => state.coinsList.status;
+export default coinsListSLice.reducer
+```
+ 
+## Slices in globalStates folder 
+
+globalStates folder has four slices representing four states. 
 
 - `baseCurrencySlice.js` - state for current `baseCurrency` selected in the project, by default it is "USD"
 - `currentCoinSlice.js` - state depicting current crypto currency selected for viewing in `PriceChart`, by default it is "Bitcoin"
@@ -209,12 +258,14 @@ globalStates folder has four slices representing four states in redux.
 
 Additional details for each slice is in the Reamde file in the `globalStates` folder. 
 
-## redux-store folder overview 
+# Contents of redux-store folder 
 
-redux-store folder contains `store.js` where I have created store using `configureStore`. 
+redux-store folder contains `store.js` where I have created **Redux store** using `configureStore`. 
 
 ```javascript
 import { configureStore } from "@reduxjs/toolkit";
+
+// reducers from each slice were imported as default
 import baseCurrenyReducer from '../globalStates/baseCurrencySlice'
 import coinsListReducer from '../globalStates/coinsListSlice'
 import currencyChartDataReducer from '../globalStates/currencyChartDataSlice'
@@ -230,8 +281,8 @@ export const store = configureStore({
 })
 ```
 
-after creating the `store` I configured it in `index.js` just as shown in Step 5 of previous mentioned steps for configuring `@reduxjs/tookit`
+after creating the `store`, I configured it in `index.js` just as shown in Step 5 of configuring `@reduxjs/tookit`
 
-## tests Overview
+# tests Overview
 
 Suitable test cases are written for components using pre-installed `@testing-library/react` in `tests` folder
