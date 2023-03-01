@@ -1,4 +1,4 @@
-## baseCurrencySlice.js 
+# baseCurrencySlice.js 
 
 - This slice defines an initial state object that contains a single property, `currency`, which is set to "USD".
 ```javascript
@@ -32,7 +32,7 @@ export const { baseCurrencyChanged } = baseCurrencySlice.actions
 export default baseCurrencySlice.reducer
 ```
 
-## currentCoinSlice.js
+# currentCoinSlice.js
 
 - This slice is designed to manage the state of the currently selected cryptocurrency in a Redux store.
 - Initial state is set to represent bitcoin. 
@@ -65,7 +65,7 @@ export const { coinChange } = currentCoinSlice.actions
 export const selectCurrentCoin = (state) => state.currentCoin
 ```
 
-## currencyChartDataSlice.js
+# currencyChartDataSlice.js
 
 - It imports `createSlice` and `createAsyncThunk` from the `@reduxjs/toolkit` package. 
 - The `initialState` object defines the initial state for the currency chart data, including an empty array `list`, `status` set to `idle`, and `error` set to `null`.
@@ -233,7 +233,7 @@ export const { reFetch } = currencyChartDataSlice.actions
 export default currencyChartDataSlice.reducer
 ```
 
-## coinsListSlice.js 
+# coinsListSlice.js 
 - The code defines a slice for handling a list of coins.
 - The initial state of the slice has a `list` array, a `status` string, and an `error` object.
 
