@@ -27,38 +27,6 @@ By default it has an `index.js`, `index.css`, `App.css`, `reportWebVitals.js` an
     - `PriceChart.js`
  - Navbar.js 
 
-And, this is how these components look like on the website 
-
- `CoinsList.js` and `CoinsListItem.js`
- 
-![Screenshot_20230227_125558](https://user-images.githubusercontent.com/106004070/221503658-ba718ead-d4e5-4ada-8fa8-86e1fd380159.png)
-
-![CoinsList](https://user-images.githubusercontent.com/106004070/221507157-c341f6e7-3885-487e-a8b3-b62909c1a114.png)
-    
- `ExchangeCoins.js`
- 
-![Screenshot_20230227_130006](https://user-images.githubusercontent.com/106004070/221505948-3e464342-6450-4481-871d-c0ada6d422a3.png)
-
- `Portfolio.js`
- 
-![Screenshot_20230227_130032](https://user-images.githubusercontent.com/106004070/221506473-cd907bac-11b4-4716-bd01-cf8a53c081ef.png)
-
- `BaseCurrencyOptions.js`
- 
-![Screenshot_20230227_125829](https://user-images.githubusercontent.com/106004070/221506540-478c440c-b289-45d2-942f-84e24638af94.png)
-
- `SearchBar.js`
- 
-![Screenshot_20230227_125919](https://user-images.githubusercontent.com/106004070/221506753-064fac17-f071-4fa4-b681-ae43da9b8451.png)
-
- `PriceChart.js`
-
-![Screenshot_20230227_125945](https://user-images.githubusercontent.com/106004070/221506788-9ab806df-d6f1-448d-ad1d-dfaf4457c037.png)
-
- `Navbar.js` 
-
-![Screenshot_20230227_130536](https://user-images.githubusercontent.com/106004070/221506807-3b222ef4-971b-41c8-a5b2-44e1a3586bd7.png)
-
 # App.js code details
 
 After chucking out default `App.js` code, this is how I setted it up 
@@ -98,6 +66,25 @@ export default App;
 This is the architecture App.js is following 
 
 ![AppjsOVerviewV2](https://user-images.githubusercontent.com/106004070/221587033-3104e8b7-cae3-427b-8973-405109ad2cde.png)
+
+# APIs from CoinGecko used throughout the project
+
+- To fetch Coins List according to market cap 
+
+    ```javascript
+    const api = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${PREFFERED_FIAT_CURRENCY}&order=market_cap_desc&per_page=100&page=1&sparkline=false`
+    // PREFFERED_FIAT_CURRENCY = fiat currency as denomination, can be USD, INR, GBP etc.
+    ```
+ - To fetch Chart data
+  
+    ```javascript
+    const api = `https://api.coingecko.com/api/v3/coins/${CRYPTO_ID}/market_chart?vs_currency=${FIAT_CURRENCY}&days=${NO_OF_DAYS}&interval=${INTERVAL}`
+    // CRYPTO_ID - id of the crypto currency defined by coingecko 
+    // FIAT_CURRENCY - fiat currency as denomination, can be USD, INR, GBP etc.
+    // NO_OF_DAYS - no of days from which you want the price data
+    // INTERVAL - suitable intervals, can be hourly, daily, weekly  
+    ```
+ 
 
 # Overview of globalStates folder and redux logic
 
