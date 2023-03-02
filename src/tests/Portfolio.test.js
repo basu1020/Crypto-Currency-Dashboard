@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import Portfolio from "../components/Portfolio/Portfolio"
-import '@testing-library/jest-dom'
+import Portfolio from "../components/Portfolio/Portfolio";
+import '@testing-library/jest-dom';
 
 describe('Portfolio component', () => {
     it('renders the component', () => {

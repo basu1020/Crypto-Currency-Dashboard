@@ -55,6 +55,21 @@ const PriceChart = () => {
     }],
   }
 
+  // configuring option such as if this component is being rendered in test environment then we have additional aspect 'responsive: false' in options
+  let option
+
+  if (process.env.NODE_ENV == 'test') {
+    option = { 
+      maintainAspectRatio: false,
+      responsive: false 
+    }
+  }
+  else {
+    option = {
+      maintainAspectRatio: false,
+    }
+  }
+
   return (
     <>
       <div className='flex flex-row '>
@@ -121,13 +136,16 @@ const PriceChart = () => {
 
         {/* Rendering charts, they will render according to the current state of 'chartType' */}
         <div className='py-1 px-1 h-5/6 flex flex-col justify-center w-auto' data-testid="thediv">
-          {chartType === "Line Chart" && <Line options={{ maintainAspectRatio: false }} data={currencyData} data-testid="line-chart" />}
+          {chartType === "Line Chart" && <Line 
+          options={option} 
+          data={currencyData} data-testid="line-chart" />}
 
-          {chartType === "Bar Chart Vertical" && <Bar options={{ maintainAspectRatio: false }} data={currencyData} data-testid="bar-chart" />}
+          {chartType === "Bar Chart Vertical" && <Bar options={option} 
+          data={currencyData} 
+          data-testid="bar-chart" />}
 
-          {chartType === "Bar Chart Horizontal" && <Bar options={
-            {
-              maintainAspectRatio: false,
+          {chartType === "Bar Chart Horizontal" && <Bar options={{
+              ...option,
               indexAxis: 'y'
             }} data={currencyData} data-testid="bar-chart-horizontal" />}
         </div>

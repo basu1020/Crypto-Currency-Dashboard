@@ -21,6 +21,21 @@ const Portfolio = () => {
     ]
   })
 
+  // configuring option such as if this component is being rendered in test environment then we have additional aspect 'responsive: false' in options
+  let option
+
+  if (process.env.NODE_ENV == 'test') {
+    option = { 
+      maintainAspectRatio: false,
+      responsive: false 
+    }
+  }
+  else {
+    option = {
+      maintainAspectRatio: false,
+    }
+  }
+
   return (
     <>
 
@@ -33,7 +48,7 @@ const Portfolio = () => {
         <div id="Portfolio-pie-chart" className='h-40 flex flex-col'>
 
           {/* Rendering pie chart with options and data */}
-          <Pie options={{ maintainAspectRatio: false }} data={chartData} data-testid='portfolio-pie-chart' />
+          <Pie options={option} data={chartData} data-testid='portfolio-pie-chart' />
         </div>
       </div>
 

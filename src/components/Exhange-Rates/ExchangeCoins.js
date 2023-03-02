@@ -46,11 +46,11 @@ const ExchangeCoins = () => {
                             <p className='text-red-700 font-bold mx-2 my-2'>Sell</p>
 
                             {/* Rendering the selling coin select field */}
-                            <select name="coinSelectorSelling" className='bg-gray-100 rounded-sm mx-2 my-2 text-gray-800 font-semibold'
+                            <select name="coinSelectorSelling" defaultValue="Select a coin" className='bg-gray-100 rounded-sm mx-2 my-2 text-gray-800 font-semibold'
                                 onChange={onChangeSellCoin}>
 
                                 {/* Rendering the options in the selling coin select field with value being their current price, key being their id*/}
-                                <option disabled selected>Select a coin</option>
+                                <option disabled>Select a coin</option>
                                 {coinListStatus && coinsList.map(element => {
                                     return <option value={element.current_price} key={element.id}>{element.name}</option>
                                 })}
@@ -63,11 +63,11 @@ const ExchangeCoins = () => {
                             <p className='text-green-700 font-bold mx-2 my-2'> Buy </p>
 
                             {/* Rendering the buying coin select field */}
-                            <select name="coinSelectorBuying" className='bg-gray-100 rounded-sm mx-2 my-2 text-gray-800 font-semibold'
+                            <select name="coinSelectorBuying" defaultValue="Select a coin" className='bg-gray-100 rounded-sm mx-2 my-2 text-gray-800 font-semibold'
                                 onChange={onChangeBuyCoin}>
 
                                 {/* Rendering the options in the buying coin select field with value being their current price, key being their id */}
-                                <option disabled selected>Select a coin</option>
+                                <option disabled >Select a coin</option>
                                 {coinListStatus && coinsList.map(element => {
                                     return <option value={element.current_price} key={element.id}>{element.name}</option>
                                 })}

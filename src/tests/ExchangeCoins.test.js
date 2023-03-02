@@ -45,12 +45,15 @@ describe('ExchangeCoins', () => {
     it('should render the select options with the correct coin names', () => {
         const sellCoinSelect = component.container.querySelector("[name='coinSelectorSelling']")
         const buyCoinSelect = component.container.querySelector("[name='coinSelectorBuying']")
-        expect(sellCoinSelect.children[0].textContent).toBe('Bitcoin')
-        expect(sellCoinSelect.children[1].textContent).toBe('Ethereum')
-        expect(sellCoinSelect.children[2].textContent).toBe('Litecoin')
-        expect(buyCoinSelect.children[0].textContent).toBe('Bitcoin')
-        expect(buyCoinSelect.children[1].textContent).toBe('Ethereum')
-        expect(buyCoinSelect.children[2].textContent).toBe('Litecoin')
+        expect(sellCoinSelect.children[0].textContent).toBe('Select a coin')
+        expect(sellCoinSelect.children[1].textContent).toBe('Bitcoin')
+        expect(sellCoinSelect.children[2].textContent).toBe('Ethereum')
+        expect(sellCoinSelect.children[3].textContent).toBe('Litecoin')
+
+        expect(buyCoinSelect.children[0].textContent).toBe('Select a coin')
+        expect(buyCoinSelect.children[1].textContent).toBe('Bitcoin')
+        expect(buyCoinSelect.children[2].textContent).toBe('Ethereum')
+        expect(buyCoinSelect.children[3].textContent).toBe('Litecoin')
     })
 
     // Testing that the exchange rate updates when the exchange button is clicked

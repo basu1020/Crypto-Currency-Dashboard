@@ -2,7 +2,7 @@ import React from "react"
 import { render, fireEvent, cleanup, queryByText } from "@testing-library/react"
 import { Provider } from "react-redux"
 import { configureStore } from '@reduxjs/toolkit'
-import CoinsList from "../components/Coin-prices-list/CoinsList"
+import CoinsList from "../components/Coins-list-MktCap/CoinsList"
 import coinsListReducer, { fetchCoinsList, selectCoinsList } from "../globalStates/coinsListSlice"
 import baseCurrencyReducer from "../globalStates/baseCurrencySlice"
 
@@ -24,7 +24,7 @@ describe('PriceList component', () => {
 
         component = render(
             <Provider store={store}>
-                <PriceList />
+                <CoinsList />
             </Provider>)
 
         getByText = component.getByText
