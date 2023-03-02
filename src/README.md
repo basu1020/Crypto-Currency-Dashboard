@@ -96,94 +96,94 @@ After digging up their documentations and tutorials on Youtube. I was able to un
 
 - Step 1 -> **Create slices** - we can define actions and reducers using `createAction` and `createReducer` but It is recommended we use `createSlice` for each redux state and define 'actions' and 'reducers' inside it like this 
 
- ```javascript
- import { createSlice } from "@reduxjs/toolkit";
+     ```javascript
+     import { createSlice } from "@reduxjs/toolkit";
 
-export const initialState = {
-    current: "current state"
-}
+    export const initialState = {
+        current: "current state"
+    }
 
-const stateOneSlice = createSlice({
-    name: 'stateOne', 
-    initialState,
-    reducers: {
-        stateOneChanged: (state, action) => {
-            state.current = action.payload
-        }
-    },
-})
- ```
+    const stateOneSlice = createSlice({
+        name: 'stateOne', 
+        initialState,
+        reducers: {
+            stateOneChanged: (state, action) => {
+                state.current = action.payload
+            }
+        },
+    })
+     ```
  Notice that in `stateOneChanged` reducer I am not returing new state but simply changing it, this is because `@reduxjs/toolkit` uses `Immer.js` under the hood. https://github.com/immerjs/immer
  
 - Step 2 -> **Define extraReducers if any** - `extraReducers` help to listen to other actions in other states in redux store and act according to it, lets say we want to change `stateOne` whenever `stateTwoChanged` action of `stateTwo` state is called. 
 
- ```javascript
- import { createSlice } from "@reduxjs/toolkit";
+     ```javascript
+     import { createSlice } from "@reduxjs/toolkit";
 
-export const initialState = {
-    current: "current state"
-}
-
-const stateOneSlice = createSlice({
-    name: 'stateOne', 
-    initialState,
-    reducers: {
-        stateOneChanged: (state, action) => {
-            state.current = action.payload
-        }
-    },
-    extraReducers(builder){ // listening to change in 'stateTwo' by 'stateTwoChanged' action. 
-        builder
-            .addCase('stateTwo/stateTwoChanged', (state, action) => {
-                state.current = "something"
-            })
+    export const initialState = {
+        current: "current state"
     }
-})
- ```
+
+    const stateOneSlice = createSlice({
+        name: 'stateOne', 
+        initialState,
+        reducers: {
+            stateOneChanged: (state, action) => {
+                state.current = action.payload
+            }
+        },
+        extraReducers(builder){ // listening to change in 'stateTwo' by 'stateTwoChanged' action. 
+            builder
+                .addCase('stateTwo/stateTwoChanged', (state, action) => {
+                    state.current = "something"
+                })
+        }
+    })
+     ```
 
 - Step 3 -> **export Reducers, Actions and State** - below is the recommended way of exporting reducers for store, actions to call from your component and state to be used by `useSelector` hook  
 
-```javascript
-export const selectStateOneCurrent = (state) => state.stateOne.current // state to be used in components using 'useSelector'
+    ```javascript
+    export const selectStateOneCurrent = (state) => state.stateOne.current // state to be used in components using 'useSelector'
 
-export const { reFetch } = stateOneSlice.actions // actions to be dispatched from components using 'useDispatch'
+    export const { reFetch } = stateOneSlice.actions // actions to be dispatched from components using 'useDispatch'
 
-export default stateOneSlice.reducer // reducers for store
-```
+    export default stateOneSlice.reducer // reducers for store
+    ```
 
 - Step 4 -> **creating redux store** -> use `configureStore` to create a store like this 
 
- ```javascript
- import stateOneReducer from "pathTo/stateOneSlice"
- import stateTwoReducer from "pathTo/stateTwoSlice"
- 
- export const store = configureStore({
-    reducer: {
-        stateOne : stateOneReducer, // names should be equal to the names in respective slices. 
-        stateTwo : stateTwoReducer,
-    }
-})
- ```` 
- - Step 5 -> **configuring store in** `index.js` **using** `Provider`
- 
- ```javascript
- import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { store } from "pathTo/store"
-import { Provider } from 'react-redux';
+     ```javascript
+     import stateOneReducer from "pathTo/stateOneSlice"
+     import stateTwoReducer from "pathTo/stateTwoSlice"
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>
-);
- ```
+     export const store = configureStore({
+        reducer: {
+            stateOne : stateOneReducer, // names should be equal to the names in respective slices. 
+            stateTwo : stateTwoReducer,
+        }
+    })
+     ```` 
+ - Step 5 -> **configuring store in** `index.js` **using** `Provider`
+
+     ```javascript
+     import React from 'react';
+    import ReactDOM from 'react-dom/client';
+    import './index.css';
+    import App from './App';
+    import reportWebVitals from './reportWebVitals';
+    import { store } from "pathTo/store"
+    import { Provider } from 'react-redux';
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(
+      <React.StrictMode>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </React.StrictMode>
+    );
+     ```
  
  ## Creating Async logic in slices
  
@@ -193,46 +193,46 @@ root.render(
 
 - During each stage of the promise of fetchCoinsList, the `extraReducers` method in the slice's definition handles state updates to reflect the current status of the promise.
 
-```javascript
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+    ```javascript
+    import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 
-const initialState = {
-    list: [],
-    status: "idle",
-    error: null
-}
-
-export const fetchCoinsList = createAsyncThunk('coinsList/fetchCoinsList', async (currBaseCurrency) => {
-    const response = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currBaseCurrency}&order=market_cap_desc&per_page=100&page=1&sparkline=false`)
-    const data = await response.json()
-    return data
-})
-
-export const coinsListSLice = createSlice({
-    name: 'coinsList',
-    initialState,
-    reducers: {},
-    extraReducers(builder) {
-        builder
-            // handling state conditions during each three stages of the promise of `fetchCoinsList`
-            .addCase(fetchCoinsList.pending, (state, action) => {
-                state.status = 'loading'
-            })
-            .addCase(fetchCoinsList.fulfilled, (state, action) => {
-                state.status = 'succeeded'
-                state.list = action.payload
-            })
-            .addCase(fetchCoinsList.rejected, (state, action) => {
-                state.status = 'failed'
-                state.error = action.error.message
-            })
+    const initialState = {
+        list: [],
+        status: "idle",
+        error: null
     }
-})
 
-export const selectCoinsList = (state) => state.coinsList.list;
-export const selectCoinsListStatus = (state) => state.coinsList.status;
-export default coinsListSLice.reducer
-```
+    export const fetchCoinsList = createAsyncThunk('coinsList/fetchCoinsList', async (currBaseCurrency) => {
+        const response = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currBaseCurrency}&order=market_cap_desc&per_page=100&page=1&sparkline=false`)
+        const data = await response.json()
+        return data
+    })
+
+    export const coinsListSLice = createSlice({
+        name: 'coinsList',
+        initialState,
+        reducers: {},
+        extraReducers(builder) {
+            builder
+                // handling state conditions during each three stages of the promise of `fetchCoinsList`
+                .addCase(fetchCoinsList.pending, (state, action) => {
+                    state.status = 'loading'
+                })
+                .addCase(fetchCoinsList.fulfilled, (state, action) => {
+                    state.status = 'succeeded'
+                    state.list = action.payload
+                })
+                .addCase(fetchCoinsList.rejected, (state, action) => {
+                    state.status = 'failed'
+                    state.error = action.error.message
+                })
+        }
+    })
+
+    export const selectCoinsList = (state) => state.coinsList.list;
+    export const selectCoinsListStatus = (state) => state.coinsList.status;
+    export default coinsListSLice.reducer
+    ```
  
 ## Slices in globalStates folder 
 
@@ -250,22 +250,22 @@ Additional details for each slice is in the Reamde file in the `globalStates` fo
 redux-store folder contains `store.js` where I have created **Redux store** using `configureStore`. 
 
 ```javascript
-import { configureStore } from "@reduxjs/toolkit";
+    import { configureStore } from "@reduxjs/toolkit";
 
-// reducers from each slice were imported as default
-import baseCurrenyReducer from '../globalStates/baseCurrencySlice'
-import coinsListReducer from '../globalStates/coinsListSlice'
-import currencyChartDataReducer from '../globalStates/currencyChartDataSlice'
-import currentCoinReducer from "../globalStates/currentCoinSlice"
+    // reducers from each slice were imported as default
+    import baseCurrenyReducer from '../globalStates/baseCurrencySlice'
+    import coinsListReducer from '../globalStates/coinsListSlice'
+    import currencyChartDataReducer from '../globalStates/currencyChartDataSlice'
+    import currentCoinReducer from "../globalStates/currentCoinSlice"
 
-export const store = configureStore({
-    reducer: {
-        baseCurrency: baseCurrenyReducer,
-        coinsList: coinsListReducer,
-        currencyChartData: currencyChartDataReducer,
-        currentCoin: currentCoinReducer
-    }
-})
+    export const store = configureStore({
+        reducer: {
+            baseCurrency: baseCurrenyReducer,
+            coinsList: coinsListReducer,
+            currencyChartData: currencyChartDataReducer,
+            currentCoin: currentCoinReducer
+        }
+    })
 ```
 
 after creating the `store`, I configured it in `index.js` just as shown in Step 5 of configuring `@reduxjs/tookit`
