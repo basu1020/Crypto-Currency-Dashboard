@@ -7,6 +7,7 @@ import { store } from "./redux-store/store"
 import { Provider } from 'react-redux';
 import { fetchCoinData } from './globalStates/currencyChartDataSlice';
 
+// dispatching it before any components mount
 store.dispatch(fetchCoinData(["bitcoin", "usd", "1"]))
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
