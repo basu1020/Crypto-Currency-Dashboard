@@ -58,8 +58,9 @@ The `SearchBar` component is a React component that implements a search bar and 
 
   
 ## Navbar.js
-This is a standard Navbar on top with Ethereum 2.0 logo. 
+This is a standard Navbar on top with AlmaBetter logo. 
   
-  ![Screenshot_20230227_130536](https://user-images.githubusercontent.com/106004070/222216792-d8d92869-724e-4ece-9d4c-d8413e8a48d7.png)
+  ![AlmabetterNavbr](https://user-images.githubusercontent.com/106004070/222405015-9ff23614-3026-455a-9f08-fbbb2624ee67.png)
+
 
   
