@@ -95,7 +95,7 @@ const PriceChart = () => {
             })}
 
           </div>
-          <div className="flex flex-row  justify-center">
+          <div className="flex flex-row 2sm:flex-col justify-center">
 
             {/* Rendering coins for choosing to view prices */}
             <select id="coinSelector"

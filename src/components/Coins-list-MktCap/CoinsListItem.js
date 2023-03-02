@@ -12,7 +12,7 @@ const CoinsListItem = (props) => {
         <div className="flex justify-start">
           <div className="mx-2 my-2 flex flex-col justify-center">
             {/* Rendering the coin image */}
-            <img src={props.image} alt={`${props.coinName}-photo`} srcSet="" className='h-10 min-w-fit' />
+            <img src={props.image} alt={`${props.coinName}-photo`} srcSet="" className='h-10 min-w-fit 2sm:h-6' />
           </div>
           <div className='mx-3 my-3'>
 
